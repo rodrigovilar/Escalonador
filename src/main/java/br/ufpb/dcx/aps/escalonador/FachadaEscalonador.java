@@ -1,8 +1,11 @@
 package br.ufpb.dcx.aps.escalonador;
 
+import java.util.ArrayList;
+
 public class FachadaEscalonador {
 	
 	private int tick;
+	private ArrayList<String> fila = new ArrayList<String>();
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 	}
@@ -11,7 +14,15 @@ public class FachadaEscalonador {
 	}
 
 	public String getStatus() {
-		return "Escalonador RoundRobin;Processos: {};Quantum: 3;Tick: " + tick;
+		if(this.fila.isEmpty()) {
+			return "Escalonador RoundRobin;Processos: {};Quantum: 3;Tick: " + this.tick;
+		} else if((this.tick == 0) && (!fila.isEmpty()) ) {
+			return "Escalonador RoundRobin;Processos: {Fila: " + this.fila.toString() + "};Quantum: 3;Tick: " + this.tick;
+		} else if((this.tick > 0) && (!fila.isEmpty()) ) {
+			return "Escalonador RoundRobin;Processos: {Rodando: " + this.fila.get(0) + "};Quantum: 3;Tick: " + this.tick;
+		} else  {
+			return null;
+		}
 	}
 
 	public void tick() {
@@ -19,6 +30,7 @@ public class FachadaEscalonador {
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
+		this.fila.add(nomeProcesso);
 	}
 
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
