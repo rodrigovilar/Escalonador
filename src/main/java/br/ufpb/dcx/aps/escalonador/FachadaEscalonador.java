@@ -30,7 +30,10 @@ public class FachadaEscalonador {
 			return "Escalonador RoundRobin;Processos: {Fila: " + this.fila.toString() + "};Quantum: 3;Tick: " + this.tick;
 		} else if((this.tick > 0) && (!fila.isEmpty()) ) {
 			return "Escalonador RoundRobin;Processos: {Rodando: " + this.fila.get(0).getName() + "};Quantum: 3;Tick: " + this.tick;
-		} else  {
+		} if(this.fila.size() > 0 && this.tick > 0) {
+			return "Escalonador RoundRobin;Processos: {Rodando" + this.fila.get(0).getName() + ", Fila: " + this.fila.toString() + "};Quantum: 3;Tick: " + this.tick;
+		}
+		else  {
 			return null;
 		}
 	}
@@ -42,6 +45,9 @@ public class FachadaEscalonador {
 			this.fila.remove(0);
         }else if(this.rodando == null && this.fila.size() > 0){
 			this.rodando = this.fila.get(0);
+		}else if(this.rodando != null && this.rodando.getTickFinal() != 0 && this.rodando.getTickFinal() < (this.tick) && this.fila.size() > 0) {
+			this.fila.add(this.rodando);
+			this.rodando = null;
 		}
 	}
 
