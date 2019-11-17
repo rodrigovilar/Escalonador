@@ -15,6 +15,7 @@ public class FachadaEscalonador {
 	    this.tipoEscalonador = tipoEscalonador;
         this.tick = 0;
         this.quantumAtual = 0;
+        this.quantum = 3;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
@@ -24,24 +25,36 @@ public class FachadaEscalonador {
 	}
 
 	public String getStatus() {
-		if(this.fila.isEmpty()) {
-			return "Escalonador RoundRobin;Processos: {};Quantum: 3;Tick: " + this.tick;
-		} else if((this.tick == 0) && (!fila.isEmpty()) ) {
-			return "Escalonador RoundRobin;Processos: {Fila: " + this.fila.toString() + "};Quantum: 3;Tick: " + this.tick;
-		} else if((this.tick > 0) && (!fila.isEmpty()) ) {
-			return "Escalonador RoundRobin;Processos: {Rodando: " + this.fila.get(0).getName() + "};Quantum: 3;Tick: " + this.tick;
-		} else  {
-			return null;
+
+		String result = "Escalonador " + this.tipoEscalonador + ";Processos: {";
+
+		if(this.rodando != null){
+			result += "Rodando: " + this.rodando.toString();
 		}
+
+		if(fila.size() > 0 && this.rodando == null){
+			result += "Fila: " + this.fila.toString();
+		}else if(fila.size() > 0){
+			result += ", Fila: " + this.fila.toString();
+		}
+		result += "};Quantum: " + this.quantum + ";Tick: " + this.tick;
+
+		return result;
 	}
 
 	public void tick() {
 		tick++;
 		if(this.rodando != null && this.rodando.getTickFinal() != 0 &&this.rodando.getTickFinal() < (this.tick)){
 			this.rodando = null;
-			this.fila.remove(0);
+        }else if(this.rodando != null && this.fila.size() > 0 && this.quantumAtual == this.quantum){
+		    this.fila.add(this.rodando);
+		    this.rodando = this.fila.get(0);
+		    this.fila.remove(0);
         }else if(this.rodando == null && this.fila.size() > 0){
-			this.rodando = this.fila.get(0);
+            this.rodando = this.fila.remove(0);
+            this.quantumAtual++;
+        }else if(this.rodando != null){
+			quantumAtual++;
 		}
 	}
 
@@ -54,11 +67,17 @@ public class FachadaEscalonador {
 	}
 
 	public void finalizarProcesso(String nomeProcesso) {
+		boolean find = false;
 		for(Processo p : this.fila){
 			if(p.getName().equalsIgnoreCase(nomeProcesso)){
 				p.setTickFinal(this.tick);
+				find = true;
 				break;
 			}
+		}
+
+		if(!find){
+			this.rodando.setTickFinal(this.tick);
 		}
 	}
 
