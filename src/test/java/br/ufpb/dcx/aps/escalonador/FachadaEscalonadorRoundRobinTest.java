@@ -72,7 +72,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 
 	@Test
-	public void t06_alternarDoisProcessosEmExecução() {
+	public void t06_alternarTresProcessosEmExecução() {
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 		fachada.adicionarProcesso("P3");
