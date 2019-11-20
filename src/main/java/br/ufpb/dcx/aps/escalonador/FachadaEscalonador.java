@@ -13,13 +13,14 @@ public class FachadaEscalonador {
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 	    this.tipoEscalonador = tipoEscalonador;
+	    this.quantumAtual = 0;
         this.tick = 0;
-        this.quantumAtual = 0;
         this.quantum = 3;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
 	    this.tipoEscalonador = roundrobin;
+        this.quantumAtual = 0;
 	    this.quantum = quantum;
 	    this.tick = 0;
 	}
@@ -46,14 +47,18 @@ public class FachadaEscalonador {
 		tick++;
 		if(this.rodando != null && this.rodando.getTickFinal() != 0 &&this.rodando.getTickFinal() < (this.tick)){
 			this.rodando = null;
-        }else if(this.rodando != null && this.fila.size() > 0 && this.quantumAtual == this.quantum){
+        }else if(this.rodando != null && this.fila.size() > 0 && this.quantumAtual >= this.quantum){
 		    this.fila.add(this.rodando);
-		    this.rodando = this.fila.get(0);
-		    this.fila.remove(0);
+		    this.rodando = this.fila.remove(0);
+		    this.quantumAtual = 1;
         }else if(this.rodando == null && this.fila.size() > 0){
             this.rodando = this.fila.remove(0);
-            this.quantumAtual++;
-        }else if(this.rodando != null){
+            if(this.fila.size() > 1) {
+                this.quantumAtual++;
+            }else{
+                this.quantumAtual = 1;
+            }
+        } else if(this.rodando != null && this.fila.size() > 0){
 			quantumAtual++;
 		}
 	}
