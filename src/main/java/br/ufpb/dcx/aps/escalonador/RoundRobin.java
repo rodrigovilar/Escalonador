@@ -1,7 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
