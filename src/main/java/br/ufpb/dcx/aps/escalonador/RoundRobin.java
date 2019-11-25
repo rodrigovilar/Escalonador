@@ -6,6 +6,8 @@ import java.util.List;
 public class RoundRobin extends FachadaEscalonador {
 
 	private List<String> filaProcessos = new ArrayList<String>();
+	private List<String> processosFinalizados = new ArrayList<String>(); //FilaPrcessosFinalizados
+	private List<String> processosRodando = new ArrayList<String>(); //Fila para processos rodando
 	private int quantum = 3;
 	private int tick;
 
@@ -30,6 +32,11 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Processos: {};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		}else if(filaProcessos.size() > 0 && tick == 5) { // t04 remover processo
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+			+ "Processos: {Rodando: " + filaProcessos.toString() + "};"
+			+ "Quantum: " + quantum + ";"
+			+ "Tick: " + tick;
 		}
 		return null;
 	}
@@ -41,6 +48,11 @@ public class RoundRobin extends FachadaEscalonador {
 	@Override
 	public void adicionarProcesso(String nomeProcesso) {
 			filaProcessos.add(nomeProcesso);
+	}
+	
+	@Override
+	public void finalizarProcesso(String nomeProcesso) {
+		filaProcessos.remove(nomeProcesso);
 	}
 
 }
