@@ -39,7 +39,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 
 	@Test
-	public void t04_finalizarProcessoEmExecução() {
+	public void t04_finalizarProcessoEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		ticks(fachada, 4);
 
@@ -51,7 +51,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 
 	@Test
-	public void t05_alternarDoisProcessosEmExecução() {
+	public void t05_alternarDoisProcessosEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 
@@ -72,7 +72,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 
 	@Test
-	public void t06_alternarTresProcessosEmExecução() {
+	public void t06_alternarTresProcessosEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
@@ -100,7 +100,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 	
 	@Test
-	public void t07_alternarDoisProcessosEmExecuçãoInicioDiferente() {
+	public void t07_alternarDoisProcessosEmExecuÃ§Ã£oInicioDiferente() {
 		fachada.adicionarProcesso("P1", 1);
 
 		ticks(fachada, 2);
@@ -125,7 +125,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	
 
 	@Test
-	public void t08_finalizarProcessoEmExecução() {
+	public void t08_finalizarProcessoEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
@@ -241,7 +241,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 	
 	@Test
-	public void t12_bloqueioProcessoEmExecução() {
+	public void t12_bloqueioProcessoEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
@@ -491,7 +491,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	}
 
 	@Test
-	public void t19_bloqueioProcessoEmExecução() {
+	public void t19_bloqueioProcessoEmExecuÃ§Ã£o() {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 2);
 		fachada.adicionarProcesso("P3", 2);
