@@ -4,9 +4,16 @@ public class Processo {
 	private String nome;
 	private String status;
 
+	
+	public Processo(String nome) {
+		this.nome = nome;
+		this.status="Fila";
+	}
+	
 	public Processo() {
 		this.status="Fila";
 	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -22,6 +29,10 @@ public class Processo {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.nome;
+	}
 	
 }
