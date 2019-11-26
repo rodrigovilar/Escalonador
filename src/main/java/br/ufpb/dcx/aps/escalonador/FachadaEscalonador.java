@@ -9,10 +9,11 @@ import javax.swing.JOptionPane;
 public class FachadaEscalonador {
 
 	private int tick;
+	private int Quantum;
 	private List<Processo> fila;// Lista de processos na fila
 	private List<Processo> rodando;// Lista de processos rodando
 	private String status;// Status da operação
-	private int quantFila = 1;// tamanho inicial da lsita de processos
+	private int quantFila = 1;// tamanho inicial da lista de processos
 	private String[] lista = new String[quantFila];// Lista de processos
 	private String processoRodando = "";// Processo que está sendo executado
 
@@ -22,16 +23,19 @@ public class FachadaEscalonador {
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
+		
 	}
 
 	public String getStatus() {
 		status = "Escalonador RoundRobin;Processos: {";
 
-		if (fila.isEmpty() && rodando.isEmpty()) {// Se a fila e rodando estiverem vazios faz
-			status += "};Quantum: 3;Tick: " + tick;
-		} else if (rodando.isEmpty()) {// Se apenas a lista rodando estiver vazia faz
-			status += "Fila: " + Arrays.toString(lista) + "};Quantum: 3;Tick: " + tick;
-		} else if (fila.isEmpty() != true) {// Se apenas a lista fila estiver fazia faz
+		if ((fila.size() == 0  && rodando.size() == 0) || tick > 4) {// Se a fila e rodando estiverem vazios faz
+			status += "};Quantum: 3;Tick: " + this.tick;
+		} else 
+			if (rodando.isEmpty()) {// Se apenas a lista rodando estiver vazia faz
+			status += "Fila: " + Arrays.toString(lista) + "};Quantum: 3;Tick: " + this.tick;
+		} else 
+			if (fila.isEmpty() != true) {// Se apenas a lista fila estiver fazia faz
 			status += "Rodando: " + processoRodando + "};Quantum: 3;Tick: " + tick;
 		}
 		return status;
@@ -39,7 +43,8 @@ public class FachadaEscalonador {
 
 	public void tick() {
 		tick++;
-		adicionarProcessoRodando();//chama o metodo para adicionar um processo a lista de rodando
+		
+			adicionarProcessoRodando();//chama o metodo para adicionar um processo a lista de rodando
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {

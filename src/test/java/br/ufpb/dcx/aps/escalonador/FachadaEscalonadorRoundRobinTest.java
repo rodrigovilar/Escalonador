@@ -39,7 +39,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 	
 	@Test
-	public void t04_finalizarProcessoEmExecuÃ§Ã£o() {
+	public void t04_finalizarProcessoEmExecução() {
 		fachada.adicionarProcesso("P1");
 		ticks(fachada, 4);
 
@@ -51,7 +51,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 
 	@Test
-	public void t05_alternarDoisProcessosEmExecuÃ§Ã£o() {
+	public void t05_alternarDoisProcessosEmExecução(){
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 
@@ -72,7 +72,8 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 
 	@Test
-	public void t06_alternarDoisProcessosEmExecuÃ§Ã£o() {
+	public void t06_alternarDoisProcessosEmExecução(){
+		
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 		fachada.adicionarProcesso("P3");
@@ -100,7 +101,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 	
 	@Test
-	public void t07_alternarDoisProcessosEmExecuÃ§Ã£oInicioDiferente() {
+	public void t07_alternarDoisProcessosEmExecuçãoInicioDiferente(){
 		fachada.adicionarProcesso("P1");
 
 		ticks(fachada, 2);
@@ -125,7 +126,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	
 
 	@Test
-	public void t08_finalizarProcessoEmExecuÃ§Ã£o() {
+	public void t08_finalizarProcessoEmExecução() {
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 		fachada.adicionarProcesso("P3");
@@ -241,7 +242,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	}
 	
 	@Test
-	public void t12_bloqueioProcessoEmExecuÃ§Ã£o() {
+	public void t12_bloqueioProcessoEmExecução() {
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 		fachada.adicionarProcesso("P3");
