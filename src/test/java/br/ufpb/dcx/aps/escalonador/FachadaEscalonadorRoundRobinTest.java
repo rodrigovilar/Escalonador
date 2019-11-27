@@ -43,8 +43,8 @@ public class FachadaEscalonadorRoundRobinTest {
 		fachada.adicionarProcesso("P1");
 		ticks(fachada, 4);
 
-		fachada.finalizarProcesso("P1");
 		checaStatusRodando(fachada, TipoEscalonador.RoundRobin, 3, 4, "P1");
+		fachada.finalizarProcesso("P1");
 
 		fachada.tick();//Só efetua a ação no próximo tick
 		checaStatus(fachada, TipoEscalonador.RoundRobin, 3, 5);
@@ -68,9 +68,10 @@ public class FachadaEscalonadorRoundRobinTest {
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 6, "P2", "P1");
 
 		fachada.tick();
-		//checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 7, "P1", "P2");
+		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 7, "P1", "P2");
 	}
-	/*
+	
+
 	@Test
 	public void t06_alternarDoisProcessosEmExecução(){
 		
@@ -99,8 +100,8 @@ public class FachadaEscalonadorRoundRobinTest {
 		fachada.tick();
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 10, "P1", "P2", "P3");
 	}
-	*/
-	/*
+
+	
 	@Test
 	public void t07_alternarDoisProcessosEmExecuçãoInicioDiferente(){
 		fachada.adicionarProcesso("P1");
@@ -388,5 +389,5 @@ public class FachadaEscalonadorRoundRobinTest {
 				"O Escalonador RoundRobin não permite que os processos tenham uma prioridade definida na adição" );
 
 	}
-	*/
+
 }
