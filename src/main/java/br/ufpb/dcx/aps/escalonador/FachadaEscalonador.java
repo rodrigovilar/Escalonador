@@ -13,6 +13,8 @@ public class FachadaEscalonador {
 	private Processo rodando;// Lista de processos rodando
 	private String status;// Status da operação
 	private int tickProximoFila;
+    private boolean finalizado;
+    private String nomeProcessoFinalizado;
 
 
 
@@ -42,22 +44,27 @@ public class FachadaEscalonador {
 		return status += "};Quantum: " + this.quantum + ";Tick: " + tick;
 	}
 
-	public void tick() {
-		tick++;
+    public void tick() {
+        tick++;
 
-		if(rodando != null) {
-			rodando.addTickRodando();
-		}
+        if(finalizado) {
+            finalizandoProcesso(rodando.getNome());
+            finalizado = false;
+        }
 
-		if (rodando != null  && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
-			trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
-		}
+        if (rodando != null) {
+            rodando.addTickRodando();
+        }
 
-		if (this.rodando == null) {
-			adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
-		}
+        if (rodando != null && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
+            trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
+        }
 
-	}
+        if (this.rodando == null) {
+            adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
+        }
+
+    }
 
 	public void adicionarProcesso(String nomeProcesso) {
 		Processo processo = new Processo(nomeProcesso,tick);// Cria um processo
@@ -85,14 +92,19 @@ public class FachadaEscalonador {
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
 	}
 
-	public void finalizarProcesso(String nomeProcesso) {
-		if (rodando != null) {// Só entra se a fila de rodando não estiver vazia
-			if (rodando.getNome().equals(nomeProcesso)) {
-				rodando = null;
+    public void finalizarProcesso(String nomeProcesso) {
+        this.finalizado = true;
+        this.nomeProcessoFinalizado = nomeProcesso;
+    }
 
-			}
-		}
-	}
+    public void finalizandoProcesso(String nomeProcesso) {
+        if (rodando != null) {
+            if (rodando.getNome().equals(nomeProcesso)) {
+                rodando = null;
+
+            }
+        }
+    }
 
 	public void bloquearProcesso(String nomeProcesso) {
 	}
