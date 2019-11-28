@@ -12,6 +12,9 @@ public class FachadaEscalonador {
 	private List<Processo> fila;// Lista de processos na fila
 	private Processo rodando;// Lista de processos rodando
 	private String status;// Status da operação
+	private int tickProximoFila;
+
+
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 		this.fila = new ArrayList<Processo>();
@@ -35,19 +38,18 @@ public class FachadaEscalonador {
 			status += ", Fila: " + this.fila.toString();
 		}
 
-		status += "};Quantum: " + this.quantum + ";Tick: " + tick;
 
-		return status;
+		return status += "};Quantum: " + this.quantum + ";Tick: " + tick;
 	}
 
 	public void tick() {
 		tick++;
-		
+
 		if(rodando != null) {
 			rodando.addTickRodando();
 		}
-		
-		if (rodando != null  && rodando.getTickRodando() == quantum) {
+
+		if (rodando != null  && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
 			trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
 		}
 
@@ -58,26 +60,23 @@ public class FachadaEscalonador {
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
-		Processo processo = new Processo(nomeProcesso);// Cria um processo
+		Processo processo = new Processo(nomeProcesso,tick);// Cria um processo
+		tickProximoFila = quantum+processo.getTickInicial();
 		fila.add(processo);// Adiciona o processo na fila
 	}
 
-	void adicionarProcessoRodando() {
+	public void adicionarProcessoRodando() {
 		if (!fila.isEmpty()) {// Só entra se a fila não estiver vazia
 			for (Processo f : fila) {// Varre a lista de fila
-				if (f.getStatus() == Status.FILA) {// Se o objeto f tiver um status com valor "Fila" faz:
-					f.setStatus(Status.RODANDO);// Seta o status para "Rodando"
 					rodando = f;// adiciona o nome do processo na variavel
 					fila.remove(f);
 					break;
-				}
 			}
 		}
 	}
 
 	public void trocaRodandoParaFila() {
 		if (rodando != null) {
-			rodando.setStatus(Status.FILA);
 			fila.add(rodando);
 			rodando = null;
 		}
@@ -103,5 +102,6 @@ public class FachadaEscalonador {
 
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
 	}
+
 
 }
