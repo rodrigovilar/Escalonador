@@ -1,15 +1,16 @@
 package br.ufpb.dcx.aps.escalonador;
 
 public class Processo {
+
 	private String nome;
-	private Status status;
-	private int tickRodado;
+	private int tickRodando;
+	private int tickInicial;
 
 	
-	public Processo(String nome) {
+	public Processo(String nome, int tickCriacao) {
 		this.nome = nome;
-		this.status= status.FILA;
-		this.tickRodado = 0;
+		this.tickRodando = 0;
+		this.tickInicial = tickCriacao;
 	}
 		
 	public String getNome() {
@@ -20,26 +21,26 @@ public class Processo {
 		this.nome = nome;
 	}
 
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	
 	public int getTickRodando() {
-		return tickRodado;
+		return tickRodando;
 	}
 
 	public void setTickRodando(int tick) {
-		this.tickRodado = tick;
+		this.tickRodando = tick;
 	}
-	
+
 	public void addTickRodando() {
-		this.tickRodado++;
+		this.tickRodando++;
 	}
-	
+
+	public int getTickInicial() {
+		return tickInicial;
+	}
+
+	public void setTickInicial(int tickCriacao) {
+		this.tickInicial = tickCriacao;
+	}
+
 	@Override
 	public String toString() {
 		return this.nome;

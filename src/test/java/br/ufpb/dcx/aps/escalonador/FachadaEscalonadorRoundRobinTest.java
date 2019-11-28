@@ -43,8 +43,8 @@ public class FachadaEscalonadorRoundRobinTest {
 		fachada.adicionarProcesso("P1");
 		ticks(fachada, 4);
 
-		checaStatusRodando(fachada, TipoEscalonador.RoundRobin, 3, 4, "P1");
 		fachada.finalizarProcesso("P1");
+		checaStatusRodando(fachada, TipoEscalonador.RoundRobin, 3, 4, "P1");
 
 		fachada.tick();//Só efetua a ação no próximo tick
 		checaStatus(fachada, TipoEscalonador.RoundRobin, 3, 5);
