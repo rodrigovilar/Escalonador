@@ -26,13 +26,10 @@ public class FachadaEscalonador {
 	}
 
 	public String getStatus() {
-
 		String result = "Escalonador " + this.tipoEscalonador + ";Processos: {";
-
 		if(this.rodando != null){
 			result += "Rodando: " + this.rodando.toString();
 		}
-
 		if(fila.size() > 0 && this.rodando == null){
 			result += "Fila: " + this.fila.toString();
 		}else if(fila.size() > 0){
@@ -45,22 +42,18 @@ public class FachadaEscalonador {
 
 	public void tick() {
 		tick++;
-		if(this.rodando != null && this.rodando.getTickFinal() != 0 &&this.rodando.getTickFinal() < (this.tick)){
+		if(this.rodando == null && this.fila.size() > 0){
+            this.rodando = this.fila.remove(0);
+		}else if(this.rodando != null && this.rodando.getTickFinal() != 0 && this.rodando.getTickFinal() < (this.tick) && this.fila.size() > 0){
+			this.rodando = this.fila.remove(0);
+		}else if(this.rodando != null && this.rodando.getTickFinal() != 0 && this.rodando.getTickFinal() < (this.tick)){
 			this.rodando = null;
-        }else if(this.rodando != null && this.fila.size() > 0 && this.quantumAtual >= this.quantum){
+		}else if(this.rodando != null && this.fila.size() > 0 && this.rodando.getTicks()== this.quantum){
 		    this.fila.add(this.rodando);
 		    this.rodando = this.fila.remove(0);
-		    this.quantumAtual = 1;
-        }else if(this.rodando == null && this.fila.size() > 0){
-            this.rodando = this.fila.remove(0);
-            if(this.fila.size() > 1) {
-                this.quantumAtual++;
-            }else{
-                this.quantumAtual = 1;
-            }
-        } else if(this.rodando != null && this.fila.size() > 0){
-			quantumAtual++;
-		}
+        }if(this.rodando !=null && this.fila.size()>0) {
+        	this.rodando.setTicks(this.rodando.getTicks()+1);
+        }
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
@@ -80,13 +73,13 @@ public class FachadaEscalonador {
 				break;
 			}
 		}
-
 		if(!find){
 			this.rodando.setTickFinal(this.tick);
 		}
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
+		
 	}
 
 	public void retomarProcesso(String nomeProcesso) {

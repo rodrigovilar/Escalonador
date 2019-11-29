@@ -8,7 +8,8 @@ public class Processo {
     private String name;
     private int tickInicial;
     private int tickFinal;
-
+    private int ticks;
+   
     public Processo(String name, int tickInicial) {
         this.name = name;
         this.tickInicial = tickInicial;
@@ -42,4 +43,15 @@ public class Processo {
     public String toString(){
         return this.name;
     }
+
+	public int getTicks() {
+		return ticks;
+	}
+
+	public void setTicks(int ticks) {
+		this.ticks = ticks;
+		
+	}
+
+
 }
