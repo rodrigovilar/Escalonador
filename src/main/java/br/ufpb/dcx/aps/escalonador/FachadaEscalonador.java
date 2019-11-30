@@ -14,14 +14,20 @@ public class FachadaEscalonador {
 	private int tickProximoFila;
 	private boolean finalizado;
 	private String nomeProcessoFinalizado;
+	
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
+		
 		this.fila = new ArrayList<Processo>();
 		this.quantum = 3;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
+		if(quantum <= 0) {
+			throw new EscalonadorException();
+		}
 		this.quantum = quantum;
+		this.fila = new ArrayList<Processo>();
 	}
 
 	public String getStatus() {
@@ -63,9 +69,12 @@ public class FachadaEscalonador {
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
-		Processo processo = new Processo(nomeProcesso, tick);// Cria um processo
-		tickProximoFila = quantum + processo.getTickInicial();
-		fila.add(processo);// Adiciona o processo na fila
+		if(this.quantum >= 0) {
+			Processo processo = new Processo(nomeProcesso, tick);// Cria um processo
+			tickProximoFila = quantum + processo.getTickInicial();
+			fila.add(processo);// Adiciona o processo na fila
+	
+		}
 	}
 
 	public void adicionarProcessoRodando() {
