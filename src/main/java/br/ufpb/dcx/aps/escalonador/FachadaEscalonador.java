@@ -52,8 +52,15 @@ public class FachadaEscalonador {
 		    this.fila.add(this.rodando);
 		    this.rodando = this.fila.remove(0);
         }if(this.rodando !=null && this.fila.size()>0) {
-        	this.rodando.setTicks(this.rodando.getTicks()+1);
-        }
+			this.rodando.setTicks(this.rodando.getTicks() + 1);
+		}
+		for(Processo p : this.fila){
+			if(p.getTickFinal() > 0){
+				this.fila.remove(p);
+				break;
+			}
+		}
+
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
@@ -67,7 +74,7 @@ public class FachadaEscalonador {
 	public void finalizarProcesso(String nomeProcesso) {
 		boolean find = false;
 		for(Processo p : this.fila){
-			if(p.getName().equalsIgnoreCase(nomeProcesso)){
+			if(p.getName().equals(nomeProcesso)){
 				p.setTickFinal(this.tick);
 				find = true;
 				break;
