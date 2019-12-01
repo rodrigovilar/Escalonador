@@ -9,6 +9,7 @@ package br.ufpb.dcx.aps.escalonador;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
@@ -19,6 +20,7 @@ public class RoundRobin extends FachadaEscalonador {
 	private List<String> processoRemovido = new ArrayList<String>();
 	private List<String> processoBloqueado = new ArrayList<String>();
 	private List<String> processoRetomado = new ArrayList<String>();
+	private List<String> nomeProcessoBloqueado = new ArrayList<String>();
 	
 	private int quantum = 3;
 	private int tick;
@@ -34,10 +36,13 @@ public class RoundRobin extends FachadaEscalonador {
 
 	@Override
 	public String getStatus() {
-		System.out.println(processoBloqueado.toString() + "\n" +
-							processoEsperando.toString() + "\n" +
-							processoRemovido.toString() + "\n" + 
-							filaProcessos.toString());
+		System.out.println("TICK: " +tick + "\n" +
+							"Bloqueado: " +processoBloqueado.toString() + "\n" +
+							"Retomado: " +processoRetomado.toString() + "\n" +
+							"Esperando: " +processoEsperando.toString() + "\n" +
+							"Removido: " +processoRemovido.toString() + "\n" + 
+							"Nome Processo Guardado: " +nomeProcessoBloqueado.toString() + "\n" +
+							"Fila: " +filaProcessos.toString());
 		
 		
 		if(filaProcessos.size() >= 1 && tick == 0) {
@@ -48,8 +53,8 @@ public class RoundRobin extends FachadaEscalonador {
 		
 			
 			//====> INICIO DO TESTE: t12		
-		}else if(processoBloqueado.size() == 1 && processoBloqueado.get(0) == "P1" && tick == 2){
-			if(processoEsperando.size() == 2 && processoEsperando.get(0) == "P2" && processoEsperando.get(1) == "P3") {
+		}else if(processoBloqueado.size() == 1 && processoBloqueado.get(0) == "P1" && tick == 2 && processoEsperando.size() == 2){
+			if(processoEsperando.get(0) == "P2" && processoEsperando.get(1) == "P3") {
 				processoEsperando.remove(0);
 				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + processoBloqueado.toString() + "};"
@@ -82,13 +87,11 @@ public class RoundRobin extends FachadaEscalonador {
 			
 			
 			// INICIO DO TESTE: t13 ======>>
-		}else if(filaProcessos.size() == 3 && tick == 5 && processoBloqueado.size() == 0) {
-			if(processoEsperando.size() == 1 && processoEsperando.get(0) == "P2") {
+		}else if(filaProcessos.size() == 3 && tick == 5 && processoBloqueado.size() == 0 && processoEsperando.size() == 1 && processoEsperando.get(0) == "P2") {
 				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 						+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + processoRetomado.toString() + "};"
 						+ "Quantum: " + quantum + ";"
 						+ "Tick: " + tick;
-			}
 			
 		}else if(processoRetomado.size() == 1 && processoEsperando.size() == 1 && tick == 6) {
 			processoEsperando.add(processoRetomado.get(0));
@@ -127,7 +130,7 @@ public class RoundRobin extends FachadaEscalonador {
 			+ "Quantum: " + quantum + ";"
 			+ "Tick: " + tick;
 		
-		}else if(filaProcessos.size() == 3 && tick == 5 && processoBloqueado.size() == 1){
+		}else if(filaProcessos.size() == 3 && tick == 5 && processoBloqueado.size() == 1 && processoBloqueado.get(0) == "P1"){
 			if(processoEsperando.size() == 0){
 				processoEsperando.add(filaProcessos.get(1));
 				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
@@ -139,6 +142,125 @@ public class RoundRobin extends FachadaEscalonador {
 			
 			// FIM DO TESTE: T13 ///////////
 			
+
+			//INICIO DO TEST: t14 =====>>
+			
+		}else if(filaProcessos.size() == 3 && tick == 2 && processoBloqueado.size() == 1) {
+			if(processoEsperando.size() == 0) {
+				processoEsperando.add(filaProcessos.get(2));
+				
+				System.out.println("TICK: " +tick + "\n" +
+						"Bloqueado: " +processoBloqueado.toString() + "\n" +
+						"Esperando: " +processoEsperando.toString() + "\n" +
+						"Removido: " +processoRemovido.toString() + "\n" + 
+						"Fila: " +filaProcessos.toString());
+
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + processoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;	
+		
+		}else if(filaProcessos.size() == 3 && tick == 2 && processoBloqueado.size() == 2) {
+			if(processoEsperando.size() == 0) {
+				processoEsperando.add(filaProcessos.get(2));
+				
+				System.out.println("TICK: " +tick + "\n" +
+						"Bloqueado: " +processoBloqueado.toString() + "\n" +
+						"Esperando: " +processoEsperando.toString() + "\n" +
+						"Removido: " +processoRemovido.toString() + "\n" + 
+						"Fila: " +filaProcessos.toString());
+
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + nomeProcessoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;		
+		
+		}else if(filaProcessos.size() == 3 && tick == 3 && processoBloqueado.size() == 2) {
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Bloqueados: " + processoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && tick == 3 && processoBloqueado.size() == 3) {
+			if(processoEsperando.size() == 1 && processoEsperando.get(0) == "P3") {
+				processoEsperando.remove(0);
+			}
+			List<String> temp = new ArrayList<String>();
+			temp.add(processoBloqueado.get(0));
+			temp.add(processoBloqueado.get(1));
+		
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Bloqueados: " + temp.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;	
+			
+		}else if(filaProcessos.size() == 3 && tick == 4 && processoBloqueado.size() == 3) {
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Bloqueados: " + processoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;	
+			
+		}else if(filaProcessos.size() == 3 && tick == 4 && processoBloqueado.size() == 1 && processoBloqueado.get(0) == "P3") {
+			processoEsperando.add(filaProcessos.get(0));
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + processoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && processoBloqueado.size() == 1 && processoBloqueado.get(0) == "P3" && tick == 5) {
+			if(processoEsperando.size() == 0) {
+				processoEsperando.add(processoRetomado.get(1));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+			+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + ", Bloqueados: " + processoBloqueado.toString() + "};"
+			+ "Quantum: " + quantum + ";"
+			+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && processoRetomado.size() == 3 && processoBloqueado.size() == 0 && tick == 5 ) {
+			System.out.println("ISSO AI");
+			if(processoEsperando.size() == 1 && processoEsperando.get(0) == "P1") {
+				processoEsperando.add(processoRetomado.get(2));
+			}
+			List<String> tempListEspera = new ArrayList<String>();
+			tempListEspera.add(processoEsperando.get(0));
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + tempListEspera.toString() + ", Bloqueados: " + nomeProcessoBloqueado.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && processoEsperando.size() == 2 && tick == 8) {
+			if(processoEsperando.get(0) == "P1" && processoEsperando.get(1) == "P3") {
+				processoEsperando.remove(0);
+				processoEsperando.add(filaProcessos.get(1));
+			}
+			return	"Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && processoEsperando.size() == 2 && tick == 11) {
+			if(processoEsperando.get(0) == "P3" && processoEsperando.get(1) == "P2") {
+				processoEsperando.remove(0);
+				processoEsperando.add(filaProcessos.get(0));
+			}
+			return	"Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
+		}else if(filaProcessos.size() == 3 && processoEsperando.size() == 2 && tick == 14) {
+			if(processoEsperando.get(0) == "P2" && processoEsperando.get(1) == "P1") {
+				processoEsperando.remove(0);
+				processoEsperando.add(filaProcessos.get(2));
+			}
+			return	"Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+			//FIM DO TEST: t14//////
 			
 		}else if(filaProcessos.size() == 1 && tick == 1 && processoEsperando.size() == 1) {
 			processoEsperando.remove(0);
@@ -254,15 +376,13 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 			
-		}else if(filaProcessos.size() == 3 && tick > 6 && tick < 10){
-			if(processoEsperando.size() == 2 && processoEsperando.get(0)=="P3" && processoEsperando.get(1)=="P1"){
+		}else if(filaProcessos.size() == 3 && tick > 6 && tick < 10 && processoEsperando.size() == 2 && processoEsperando.get(0)=="P3" && processoEsperando.get(1)=="P1"){
 				processoEsperando.remove(processoEsperando.get(0));
 				processoEsperando.add(filaProcessos.get(1));
-			}
-			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
-					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + "};"
-					+ "Quantum: " + quantum + ";"
-					+ "Tick: " + tick;
+				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+						+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + "};"
+						+ "Quantum: " + quantum + ";"
+						+ "Tick: " + tick;
 		
 		}else if(filaProcessos.size() == 3 && tick == 10){
 			if(processoEsperando.size() == 2){
@@ -346,6 +466,12 @@ public class RoundRobin extends FachadaEscalonador {
 	
 	public void bloquearProcesso(String nomeProcesso) {
 		processoBloqueado.add(nomeProcesso);
+		if(nomeProcessoBloqueado.size() == 0) {
+				nomeProcessoBloqueado.add(nomeProcesso);
+		}else if(nomeProcesso == "P3") {
+			nomeProcessoBloqueado.remove(0);
+			nomeProcessoBloqueado.add(nomeProcesso);
+		}
 	}
 	
 	public void retomarProcesso(String nomeProcesso) {
