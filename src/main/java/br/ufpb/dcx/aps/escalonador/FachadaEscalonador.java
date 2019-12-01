@@ -3,7 +3,6 @@ package br.ufpb.dcx.aps.escalonador;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FachadaEscalonador {
 
 	private int tick;
@@ -14,18 +13,20 @@ public class FachadaEscalonador {
 	private int tickProximoFila;
 	private boolean finalizado;
 	private String nomeProcessoFinalizado;
-	
+	private List<Processo> listaBloqueados;
+	private boolean processoBloqueado;
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
-		
+		this.listaBloqueados = new ArrayList<Processo>();
 		this.fila = new ArrayList<Processo>();
 		this.quantum = 3;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
-		if(quantum <= 0) {
+		if (quantum <= 0) {
 			throw new EscalonadorException();
 		}
+		this.listaBloqueados = new ArrayList<Processo>();
 		this.quantum = quantum;
 		this.fila = new ArrayList<Processo>();
 	}
@@ -42,7 +43,11 @@ public class FachadaEscalonador {
 		} else if (!fila.isEmpty() && rodando != null) {
 			status += ", Fila: " + this.fila.toString();
 		}
-
+		
+		if (!listaBloqueados.isEmpty() && processoBloqueado == true) {
+			status += ", Bloqueados: " + this.listaBloqueados.toString();
+		}
+		
 		return status += "};Quantum: " + this.quantum + ";Tick: " + tick;
 	}
 
@@ -57,7 +62,7 @@ public class FachadaEscalonador {
 		if (rodando != null) {
 			rodando.addTickRodando();
 		}
-
+		
 		if (rodando != null && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
 			trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
 		}
@@ -66,14 +71,19 @@ public class FachadaEscalonador {
 			adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
 		}
 
+		if (!listaBloqueados.isEmpty()) {
+			processoBloqueado= true;
+			trocaRodandoParaFila();
+			adicionarProcessoRodando();
+		}
 	}
-
+	
 	public void adicionarProcesso(String nomeProcesso) {
-		if(this.quantum >= 0) {
+		if (this.quantum >= 0) {
 			Processo processo = new Processo(nomeProcesso, tick);// Cria um processo
 			tickProximoFila = quantum + processo.getTickInicial();
 			fila.add(processo);// Adiciona o processo na fila
-	
+
 		}
 	}
 
@@ -88,12 +98,18 @@ public class FachadaEscalonador {
 	}
 
 	public void trocaRodandoParaFila() {
-		if (rodando != null) {
+		boolean bloqueado= false;
+		
+		for (Processo p : listaBloqueados) {
+			if (rodando.getNome().equals(p.getNome())) {
+				bloqueado = true;
+			}
+		}
+		if (rodando != null && bloqueado==false) {
 			fila.add(rodando);
 			rodando = null;
 		}
 	}
-
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
 	}
 
@@ -118,6 +134,11 @@ public class FachadaEscalonador {
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
+		if (rodando != null) {
+			if (rodando.getNome().equals(nomeProcesso)) {
+				listaBloqueados.add(rodando);				
+			}	
+		}
 	}
 
 	public void retomarProcesso(String nomeProcesso) {
