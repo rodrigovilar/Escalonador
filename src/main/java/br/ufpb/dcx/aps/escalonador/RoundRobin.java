@@ -9,12 +9,10 @@ package br.ufpb.dcx.aps.escalonador;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
 	
-
 	private List<String> filaProcessos = new ArrayList<String>();
 	private List<String> processoEsperando = new ArrayList<String>();
 	private List<String> processoRemovido = new ArrayList<String>();
