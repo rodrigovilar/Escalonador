@@ -251,18 +251,18 @@ public class FachadaEscalonadorRoundRobinTest {
 
 		fachada.tick();
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 1, "P1", "P2", "P3");
-		
 		fachada.bloquearProcesso("P1");
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 1, "P1", "P2", "P3");
-
 		fachada.tick();
+
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.RoundRobin, 3, 2, "P2", "[P3]", "[P1]");
-		
+
 		ticks(fachada, 3);
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.RoundRobin, 3, 5, "P3", "[P2]", "[P1]");
 		
 		ticks(fachada, 3);
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.RoundRobin, 3, 8, "P2", "[P3]", "[P1]");
+
 	}
 	
 	@Test
@@ -276,21 +276,22 @@ public class FachadaEscalonadorRoundRobinTest {
 
 		ticks(fachada, 4);
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.RoundRobin, 3, 5, "P3", "[P2]", "[P1]");
-
+		
 		fachada.retomarProcesso("P1");
+		
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.RoundRobin, 3, 5, "P3", "[P2]", "[P1]");
-		
+	
 		fachada.tick();
-		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 6, "P3", "P2", "P1");
-		
+		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 6, "P3", "P2", "P1");	
 		ticks(fachada, 3);
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 9, "P2", "P1", "P3");
-		
+	
 		ticks(fachada, 3);
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 12, "P1", "P3", "P2");
 
 		ticks(fachada, 3);
 		checaStatusRodandoFila(fachada, TipoEscalonador.RoundRobin, 3, 15, "P3", "P2", "P1");
+
 	}
 	
 	@Test
