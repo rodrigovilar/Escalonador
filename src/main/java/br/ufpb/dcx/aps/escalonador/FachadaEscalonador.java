@@ -2,11 +2,9 @@ package br.ufpb.dcx.aps.escalonador;
 
 public class FachadaEscalonador {
 	
-	private TipoEscalonador tipoEscalonador;
 	private int tick;
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
-		this.tipoEscalonador = tipoEscalonador;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {

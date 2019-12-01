@@ -191,7 +191,7 @@ public class FachadaEscalonadorRoundRobinTest {
 	
 	@Test
 	public void t10_quantumNaoDefault() {
-		fachada = new FachadaEscalonador(TipoEscalonador.RoundRobin, 5);
+		fachada = new RoundRobin(TipoEscalonador.RoundRobin, 5);
 		fachada.adicionarProcesso("P1");
 		fachada.adicionarProcesso("P2");
 
