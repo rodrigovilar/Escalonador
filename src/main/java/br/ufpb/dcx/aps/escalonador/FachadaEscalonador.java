@@ -1,6 +1,7 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class FachadaEscalonador {
 
@@ -11,6 +12,7 @@ public class FachadaEscalonador {
 	private Processo rodando;
 	private ArrayList<Processo> fila = new ArrayList<>();
 	private ArrayList<Processo> bloqueados = new ArrayList<>();
+    private ArrayList<Processo> aRetormar = new ArrayList<>();
 
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
@@ -94,16 +96,28 @@ public class FachadaEscalonador {
 	}
 
 	private void readicionaProcessoBloqueado(){
-		ArrayList<Integer> keys = new ArrayList<>();
+		ArrayList<Integer> keysA = new ArrayList<>();
+        ArrayList<Integer> keysB = new ArrayList<>();
 
-		for(Processo p : this.bloqueados){
-			if(!p.isBloqueado()){
-				keys.add(this.bloqueados.indexOf(p));
-			}
+		for(Processo p : this.aRetormar){
+			for(Processo b : this.bloqueados){
+			    if(p.getName().equalsIgnoreCase(b.getName())){
+			        keysA.add(this.bloqueados.indexOf(b));
+			        keysB.add(this.aRetormar.indexOf(p));
+                }
+            }
 		}
-		for(Integer i : keys){
-			this.fila.add(this.bloqueados.remove((int) i));
+		for(Integer i : keysA){
+		    if(this.rodando == null){
+                this.rodando = this.bloqueados.remove((int) i);
+            }else {
+                this.fila.add(this.bloqueados.remove((int) i));
+            }
 		}
+
+        for(Integer i : keysB){
+            this.aRetormar.remove(i);
+        }
 	}
 
 	private void removeProcessosBloqueados(){
@@ -199,7 +213,7 @@ public class FachadaEscalonador {
 		for(Processo p : this.bloqueados){
 			if(p.getName().equalsIgnoreCase(nomeProcesso)){
 				p.setBloqueado(false);
-				this.bloqueados.add(0, this.bloqueados.remove((this.bloqueados.indexOf(p))));
+				this.aRetormar.add(p);
 				existe = true;
 				break;
 			}
