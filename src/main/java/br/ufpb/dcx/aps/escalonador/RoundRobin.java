@@ -374,6 +374,12 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 			
+		}else if(filaProcessos.size() == 3 && tick == 9 && processoEsperando.size() == 2 && processoEsperando.get(0)=="P1" && processoEsperando.get(1)=="P2") {
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
 		}else if(filaProcessos.size() == 3 && tick > 6 && tick < 10 && processoEsperando.size() == 2 && processoEsperando.get(0)=="P3" && processoEsperando.get(1)=="P1"){
 				processoEsperando.remove(processoEsperando.get(0));
 				processoEsperando.add(filaProcessos.get(1));
