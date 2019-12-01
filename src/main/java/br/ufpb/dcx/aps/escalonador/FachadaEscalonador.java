@@ -1,13 +1,11 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class FachadaEscalonador {
 
     private TipoEscalonador tipoEscalonador;
     private int quantum;
-    private int quantumAtual;
 	private int tick;
 	private Processo rodando;
 	private ArrayList<Processo> fila = new ArrayList<>();
@@ -21,14 +19,12 @@ public class FachadaEscalonador {
 		}else{
 			this.tipoEscalonador = tipoEscalonador;
 		}
-	    this.quantumAtual = 0;
         this.tick = 0;
         this.quantum = 3;
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
 	    this.tipoEscalonador = roundrobin;
-        this.quantumAtual = 0;
 	    if(quantum <= 0){
 	    	throw  new EscalonadorException();
 		}else{
@@ -75,12 +71,15 @@ public class FachadaEscalonador {
         }
 
 		this.readicionaProcessoBloqueado();
-
-		if(this.rodando !=null && this.fila.size()>0) {
-			this.rodando.setTicks(this.rodando.getTicks() + 1);
-		}
+		this.incrementaTickProcessoAtual();
 
 	}
+
+	private void incrementaTickProcessoAtual(){
+        if(this.rodando !=null && this.fila.size()>0) {
+            this.rodando.setTicks(this.rodando.getTicks() + 1);
+        }
+    }
 
 	private void removeProcessosExpirados(){
 		ArrayList<Integer> keys = new ArrayList<>();
