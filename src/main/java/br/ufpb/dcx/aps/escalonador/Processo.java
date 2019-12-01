@@ -9,6 +9,7 @@ public class Processo {
     private int tickInicial;
     private int tickFinal;
     private int ticks;
+    private boolean bloqueado;
    
     public Processo(String name, int tickInicial) {
         this.name = name;
@@ -53,5 +54,11 @@ public class Processo {
 		
 	}
 
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
 
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
 }
