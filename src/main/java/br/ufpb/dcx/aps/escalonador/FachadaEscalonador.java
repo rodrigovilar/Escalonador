@@ -84,7 +84,6 @@ public class FachadaEscalonador {
 			trocaRodandoParaFila();
 			adicionarProcessoRodando();
 		}
-
 		if (retomar) {
 			retomandoProcesso(processoRetomar);
 		}
@@ -153,7 +152,6 @@ public class FachadaEscalonador {
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
-
 		if (rodando != null) {
 			if (rodando.getNome().equals(nomeProcesso)) {
 				listaBloqueados.add(rodando);
