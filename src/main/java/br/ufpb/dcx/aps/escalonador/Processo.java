@@ -5,6 +5,8 @@ public class Processo {
 	private String nome;
 	private int tickRodando;
 	private int tickInicial;
+	private boolean bloqueado;
+	private int ticks;
 
 	
 	public Processo(String nome, int tickCriacao) {
@@ -40,10 +42,27 @@ public class Processo {
 	public void setTickInicial(int tickCriacao) {
 		this.tickInicial = tickCriacao;
 	}
+	
+	public int getTicks() {
+		return ticks;
+	}
+
+	public void setTicks(int ticks) {
+		this.ticks = ticks;
+	}
 
 	@Override
 	public String toString() {
 		return this.nome;
 	}
+
+	public boolean isBloqueado() {
+		return bloqueado;
+	}
+
+	public void setBloqueado(boolean bloqueado) {
+		this.bloqueado = bloqueado;
+	}
+
 	
 }
