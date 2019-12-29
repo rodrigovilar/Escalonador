@@ -7,25 +7,31 @@ public class FachadaEscalonador {
 
 	private int tick;
 	private int quantum;
-	private List<Processo> fila;// Lista de processos na fila
-	private Processo rodando;// Lista de processos rodando
 	private int tickProximoFila;
-	private boolean finalizado;
-	private String nomeProcessoFinalizado;
+
+	private List<Processo> fila;// Lista de processos na fila
 	private List<Processo> listaBloqueados;
+	private List<Processo> listaRetomar;
+
+	private Processo rodando;// Lista de processos rodando
+
+	private boolean finalizado;
 	private boolean processoBloqueado;
-	private List <Processo> processosRetomar = new ArrayList<>();
-	private String nomeProcessoBloquado;
 	private boolean retomar = false;
+
+	private String nomeProcessoFinalizado;
+	private String nomeProcessoBloquado;
 	private String processoRetomar;
+
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 		if (tipoEscalonador == null){
 			throw new EscalonadorException();
 			
 		}else {
-		this.listaBloqueados = new ArrayList<Processo>();
-		this.fila = new ArrayList<Processo>();
+		this.listaBloqueados = new ArrayList<>();
+		this.listaRetomar = new ArrayList<>();
+		this.fila = new ArrayList<>();
 		this.quantum = 3;
 	}
 	}
@@ -51,11 +57,15 @@ public class FachadaEscalonador {
 		} else if (!fila.isEmpty() && rodando != null) {
 			status += ", Fila: " + this.fila.toString();
 		}
-		
-		if (!listaBloqueados.isEmpty() && processoBloqueado == true) {
+
+		if (!listaBloqueados.isEmpty() && processoBloqueado == true && rodando != null) {
 			status += ", Bloqueados: " + this.listaBloqueados.toString();
 		}
-		
+
+		if (!listaBloqueados.isEmpty() && processoBloqueado == true && rodando == null) {
+			status += "Bloqueados: " + this.listaBloqueados.toString();
+		}
+
 		return status += "};Quantum: " + this.quantum + ";Tick: " + tick;
 	}
 
@@ -67,28 +77,32 @@ public class FachadaEscalonador {
 			finalizado = false;
 		}
 
+		if (processoBloqueado){
+			bloqueandoProcesso(nomeProcessoBloquado);
+		}
+
+		if (retomar) {
+			retomandoProcesso(listaRetomar);
+			retomar = false;
+		}
+
 		if (rodando != null) {
 			rodando.addTickRodando();
 		}
-		
+
 		if (rodando != null && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
 			trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
 		}
 
-		if (this.rodando == null) {
+		if (this.rodando == null && !fila.isEmpty()) {
 			adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
 		}
 
 		if (!listaBloqueados.isEmpty() && retomar == false) {
-			processoBloqueado= true;
+			processoBloqueado = true;
 			trocaRodandoParaFila();
 			adicionarProcessoRodando();
 		}
-		if (retomar) {
-			retomandoProcesso(processoRetomar);
-		}
-
-
 	}
 	
 	public void adicionarProcesso(String nomeProcesso) {
@@ -126,6 +140,9 @@ public class FachadaEscalonador {
 			rodando.setTickRodando(0);
 			fila.add(rodando);
 			rodando = null;
+		}else if(rodando != null && bloqueado) {
+			rodando.setTickRodando(0);
+			rodando = null;
 		}
 	}
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
@@ -152,11 +169,17 @@ public class FachadaEscalonador {
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
+		this.processoBloqueado = true;
+		nomeProcessoBloquado = nomeProcesso;
+	}
+
+	public void bloqueandoProcesso(String nomeProcessoBloq){
+		this.processoBloqueado = false;
 		if (rodando != null) {
-			if (rodando.getNome().equals(nomeProcesso)) {
+			if (rodando.getNome().equals(nomeProcessoBloq)) {
 				listaBloqueados.add(rodando);
 				this.nomeProcessoBloquado = rodando.getNome();
-			}	
+			}
 		}
 	}
 
@@ -164,23 +187,27 @@ public class FachadaEscalonador {
 
 	public void retomarProcesso(String nomeProcesso) {
 		this.retomar = true;
-		this.processoRetomar = nomeProcesso;
+		for(Processo p : listaBloqueados){
+			if(p.getNome().equals(nomeProcesso)){
+				listaRetomar.add(p);
+			}
+		}
 	}
 	
 	
-	public void retomandoProcesso(String nomeProcesso) {
-		retomar = false;
+	public void retomandoProcesso(List<Processo> retomar) {
 
-		for(Processo p: listaBloqueados) {
-			if(p.getNome().equals(nomeProcesso)) {
-				fila.add(p);
-				this.processosRetomar.remove(p);
-				this.listaBloqueados.remove(p);
-				break;
-			
+		while(!retomar.isEmpty()){
+			for ( int i=0; i < listaBloqueados.size(); i++ ){
+				for( int j=0; j < retomar.size(); j++ ){
+					if( listaBloqueados.get(i).getNome().equals(retomar.get(j).getNome())){
+						fila.add(listaBloqueados.get(i));
+						listaBloqueados.remove(i);
+						retomar.remove(j);
+					}
+				}
 			}
 		}
-
 	}
 
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
