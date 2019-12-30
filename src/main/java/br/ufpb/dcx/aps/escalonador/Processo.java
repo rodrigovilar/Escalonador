@@ -5,7 +5,6 @@ public class Processo {
 	private String nome;
 	private int tickRodando;
 	private int tickInicial;
-	private boolean bloqueado;
 	private int ticks;
 
 	
@@ -55,14 +54,5 @@ public class Processo {
 	public String toString() {
 		return this.nome;
 	}
-
-	public boolean isBloqueado() {
-		return bloqueado;
-	}
-
-	public void setBloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
-	}
-
 	
 }
