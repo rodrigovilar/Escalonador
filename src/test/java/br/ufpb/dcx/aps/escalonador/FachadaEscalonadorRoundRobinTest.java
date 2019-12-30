@@ -348,7 +348,7 @@ public class FachadaEscalonadorRoundRobinTest {
 		assertThrows(EscalonadorException.class, () -> fachada.adicionarProcesso("P"), 
 				"Já existe um processo com o nome P" );
 
-		assertThrows(EscalonadorException.class, () -> fachada.finalizarProcesso("A"), 
+		assertThrows(EscalonadorException.class, () -> fachada.finalizarProcesso("A"),
 				"Não existe um processo com o nome A" );
 
 		assertThrows(EscalonadorException.class, () -> fachada = new FachadaEscalonador(TipoEscalonador.RoundRobin, -1), 

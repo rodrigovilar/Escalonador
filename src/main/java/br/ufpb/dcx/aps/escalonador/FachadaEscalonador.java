@@ -106,9 +106,15 @@ public class FachadaEscalonador {
 	}
 	
 	public void adicionarProcesso(String nomeProcesso) {
+
+		if (existsProcessoByName(nomeProcesso)){
+			throw new EscalonadorException();
+		}
+
 		if (nomeProcesso == null) {
 			throw new EscalonadorException();
 		}
+
 		if (this.quantum >= 0) {
 			Processo processo = new Processo(nomeProcesso, tick);// Cria um processo
 			tickProximoFila = quantum + processo.getTickInicial();
@@ -146,11 +152,17 @@ public class FachadaEscalonador {
 		}
 	}
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
+		throw new EscalonadorException();
 	}
 
 	public void finalizarProcesso(String nomeProcesso) {
-		this.finalizado = true;
-		this.nomeProcessoFinalizado = nomeProcesso;
+
+		if (!existsProcessoByName(nomeProcesso) && !isRodando(nomeProcesso)){
+			throw new EscalonadorException();
+		} else {
+			this.finalizado = true;
+			this.nomeProcessoFinalizado = nomeProcesso;
+		}
 	}
 
 	public void finalizandoProcesso(String nomeProcesso) {
@@ -169,6 +181,9 @@ public class FachadaEscalonador {
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
+		if(!existsProcessoByName(nomeProcesso) || !isRodando(nomeProcesso)){
+			throw new EscalonadorException();
+		}
 		this.processoBloqueado = true;
 		nomeProcessoBloquado = nomeProcesso;
 	}
@@ -186,6 +201,11 @@ public class FachadaEscalonador {
 
 
 	public void retomarProcesso(String nomeProcesso) {
+
+		if (!isBloqueado(nomeProcesso) || !existsProcessoByName(nomeProcesso)){
+			throw new EscalonadorException();
+		}
+
 		this.retomar = true;
 		for(Processo p : listaBloqueados){
 			if(p.getNome().equals(nomeProcesso)){
@@ -208,6 +228,50 @@ public class FachadaEscalonador {
 				}
 			}
 		}
+	}
+
+	public Boolean existsProcessoByName(String nome){
+		if (!fila.isEmpty()){
+			for(Processo p: fila){
+				if (p.getNome().equals(nome)){
+					return true;
+				}
+			}
+		}
+		if(!listaBloqueados.isEmpty()){
+			for (Processo b : listaBloqueados){
+				if (b.getNome().equals(nome)){
+					return true;
+				}
+			}
+		}
+		if( rodando != null){
+			if( rodando.getNome() == nome){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isBloqueado(String p){
+		if(!listaBloqueados.isEmpty()){
+			for(Processo q: listaBloqueados){
+				if(q.getNome().equals(p)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isRodando(String p){
+		if(rodando != null){
+			if(rodando.getNome().equals(p)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
