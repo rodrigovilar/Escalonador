@@ -1,9 +1,11 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FachadaEscalonador {
+	private TipoEscalonador tipoEscalonador;
 
 	private int tick;
 	private int quantum;
@@ -23,30 +25,31 @@ public class FachadaEscalonador {
 	private String nomeProcessoBloquado;
 	private String processoRetomar;
 
-
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
-		if (tipoEscalonador == null){
+		if (tipoEscalonador == null) {
 			throw new EscalonadorException();
-			
-		}else {
-		this.listaBloqueados = new ArrayList<>();
-		this.listaRetomar = new ArrayList<>();
-		this.fila = new ArrayList<>();
-		this.quantum = 3;
-	}
+
+		} else {
+			this.tipoEscalonador = tipoEscalonador;
+			this.listaBloqueados = new ArrayList<>();
+			this.listaRetomar = new ArrayList<>();
+			this.fila = new ArrayList<>();
+			this.quantum = 3;
+		}
 	}
 
-	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
+	public FachadaEscalonador(TipoEscalonador tipoEscalonador, int quantum) {
 		if (quantum <= 0) {
 			throw new EscalonadorException();
 		}
+		this.tipoEscalonador = tipoEscalonador;
 		this.listaBloqueados = new ArrayList<Processo>();
 		this.quantum = quantum;
 		this.fila = new ArrayList<Processo>();
 	}
 
 	public String getStatus() {
-		String status = "Escalonador RoundRobin;Processos: {";
+		String status = "Escalonador " + tipoEscalonador + ";Processos: {";
 
 		if (rodando != null) {
 			status += "Rodando: " + rodando.toString();
@@ -77,7 +80,7 @@ public class FachadaEscalonador {
 			finalizado = false;
 		}
 
-		if (processoBloqueado){
+		if (processoBloqueado) {
 			bloqueandoProcesso(nomeProcessoBloquado);
 		}
 
@@ -104,10 +107,10 @@ public class FachadaEscalonador {
 			adicionarProcessoRodando();
 		}
 	}
-	
+
 	public void adicionarProcesso(String nomeProcesso) {
 
-		if (existsProcessoByName(nomeProcesso)){
+		if (existsProcessoByName(nomeProcesso)) {
 			throw new EscalonadorException();
 		}
 
@@ -134,30 +137,46 @@ public class FachadaEscalonador {
 	}
 
 	public void trocaRodandoParaFila() {
-		boolean bloqueado= false;
-		
+		boolean bloqueado = false;
+
 		for (Processo p : listaBloqueados) {
 			if (rodando.getNome().equals(p.getNome())) {
 				bloqueado = true;
 				break;
 			}
 		}
-		if (rodando != null && bloqueado==false) {
+		if (rodando != null && bloqueado == false) {
 			rodando.setTickRodando(0);
 			fila.add(rodando);
 			rodando = null;
-		}else if(rodando != null && bloqueado) {
+		} else if (rodando != null && bloqueado) {
 			rodando.setTickRodando(0);
 			rodando = null;
 		}
 	}
+
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
-		throw new EscalonadorException();
+
+		if (existsProcessoByName(nomeProcesso)) {
+			throw new EscalonadorException();
+		}
+
+		if (nomeProcesso == null) {
+			throw new EscalonadorException();
+		}
+
+		if (this.quantum >= 0) {
+			Processo processo = new Processo(nomeProcesso, tick, prioridade);// Cria um processo
+			tickProximoFila = quantum + processo.getTickInicial();
+			fila.add(processo);// Adiciona o processo na fila
+			Collections.sort(fila);
+
+		}
 	}
 
 	public void finalizarProcesso(String nomeProcesso) {
 
-		if (!existsProcessoByName(nomeProcesso) && !isRodando(nomeProcesso)){
+		if (!existsProcessoByName(nomeProcesso) && !isRodando(nomeProcesso)) {
 			throw new EscalonadorException();
 		} else {
 			this.finalizado = true;
@@ -181,14 +200,14 @@ public class FachadaEscalonador {
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
-		if(!existsProcessoByName(nomeProcesso) || !isRodando(nomeProcesso)){
+		if (!existsProcessoByName(nomeProcesso) || !isRodando(nomeProcesso)) {
 			throw new EscalonadorException();
 		}
 		this.processoBloqueado = true;
 		nomeProcessoBloquado = nomeProcesso;
 	}
 
-	public void bloqueandoProcesso(String nomeProcessoBloq){
+	public void bloqueandoProcesso(String nomeProcessoBloq) {
 		this.processoBloqueado = false;
 		if (rodando != null) {
 			if (rodando.getNome().equals(nomeProcessoBloq)) {
@@ -198,29 +217,26 @@ public class FachadaEscalonador {
 		}
 	}
 
-
-
 	public void retomarProcesso(String nomeProcesso) {
 
-		if (!isBloqueado(nomeProcesso) || !existsProcessoByName(nomeProcesso)){
+		if (!isBloqueado(nomeProcesso) || !existsProcessoByName(nomeProcesso)) {
 			throw new EscalonadorException();
 		}
 
 		this.retomar = true;
-		for(Processo p : listaBloqueados){
-			if(p.getNome().equals(nomeProcesso)){
+		for (Processo p : listaBloqueados) {
+			if (p.getNome().equals(nomeProcesso)) {
 				listaRetomar.add(p);
 			}
 		}
 	}
-	
-	
+
 	public void retomandoProcesso(List<Processo> retomar) {
 
-		while(!retomar.isEmpty()){
-			for ( int i=0; i < listaBloqueados.size(); i++ ){
-				for( int j=0; j < retomar.size(); j++ ){
-					if( listaBloqueados.get(i).getNome().equals(retomar.get(j).getNome())){
+		while (!retomar.isEmpty()) {
+			for (int i = 0; i < listaBloqueados.size(); i++) {
+				for (int j = 0; j < retomar.size(); j++) {
+					if (listaBloqueados.get(i).getNome().equals(retomar.get(j).getNome())) {
 						fila.add(listaBloqueados.get(i));
 						listaBloqueados.remove(i);
 						retomar.remove(j);
@@ -230,23 +246,23 @@ public class FachadaEscalonador {
 		}
 	}
 
-	public Boolean existsProcessoByName(String nome){
-		if (!fila.isEmpty()){
-			for(Processo p: fila){
-				if (p.getNome().equals(nome)){
+	public Boolean existsProcessoByName(String nome) {
+		if (!fila.isEmpty()) {
+			for (Processo p : fila) {
+				if (p.getNome().equals(nome)) {
 					return true;
 				}
 			}
 		}
-		if(!listaBloqueados.isEmpty()){
-			for (Processo b : listaBloqueados){
-				if (b.getNome().equals(nome)){
+		if (!listaBloqueados.isEmpty()) {
+			for (Processo b : listaBloqueados) {
+				if (b.getNome().equals(nome)) {
 					return true;
 				}
 			}
 		}
-		if( rodando != null){
-			if( rodando.getNome() == nome){
+		if (rodando != null) {
+			if (rodando.getNome() == nome) {
 				return true;
 			}
 		}
@@ -254,10 +270,10 @@ public class FachadaEscalonador {
 		return false;
 	}
 
-	public boolean isBloqueado(String p){
-		if(!listaBloqueados.isEmpty()){
-			for(Processo q: listaBloqueados){
-				if(q.getNome().equals(p)){
+	public boolean isBloqueado(String p) {
+		if (!listaBloqueados.isEmpty()) {
+			for (Processo q : listaBloqueados) {
+				if (q.getNome().equals(p)) {
 					return true;
 				}
 			}
@@ -265,9 +281,9 @@ public class FachadaEscalonador {
 		return false;
 	}
 
-	public boolean isRodando(String p){
-		if(rodando != null){
-			if(rodando.getNome().equals(p)){
+	public boolean isRodando(String p) {
+		if (rodando != null) {
+			if (rodando.getNome().equals(p)) {
 				return true;
 			}
 		}

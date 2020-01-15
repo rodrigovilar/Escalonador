@@ -1,7 +1,8 @@
 package br.ufpb.dcx.aps.escalonador;
 
-public class Processo {
-
+public class Processo implements Comparable<Processo>{
+	
+	private int prioridade;
 	private String nome;
 	private int tickRodando;
 	private int tickInicial;
@@ -13,7 +14,24 @@ public class Processo {
 		this.tickRodando = 0;
 		this.tickInicial = tickCriacao;
 	}
+	
+	public Processo(String nome, int tickCriacao, int prioridade) {
+		this.prioridade = prioridade;
+		this.nome = nome;
+		this.tickRodando = 0;
+		this.tickInicial = tickCriacao;
 		
+	}
+	public int getPrioridade() {
+		return prioridade;
+	}
+
+
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
+	}
+
+
 	public String getNome() {
 		return nome;
 	}
@@ -53,6 +71,18 @@ public class Processo {
 	@Override
 	public String toString() {
 		return this.nome;
+	}
+
+	@Override
+	public int compareTo(Processo outroProcesso) {
+		// TODO Auto-generated method stub
+		if(this.prioridade < outroProcesso.prioridade) {
+			return -1;
+		}
+		if(this.prioridade > outroProcesso.prioridade) {
+			return 1;
+		}
+		return 0;
 	}
 	
 }
