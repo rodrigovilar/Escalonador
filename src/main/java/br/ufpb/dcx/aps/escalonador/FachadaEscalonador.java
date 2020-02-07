@@ -2,26 +2,21 @@ package br.ufpb.dcx.aps.escalonador;
 
 public class FachadaEscalonador {
 
-	public EscalonadorFactory factory;
+	private AbstractFactory factory;
 	private Escalonador escalonador;
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 		if(tipoEscalonador != null){
-			if(tipoEscalonador == TipoEscalonador.RoundRobin){
-				factory = new RoundRobinFactory();
-				escalonador = factory.criarEscalonador();
-			}else if(tipoEscalonador == TipoEscalonador.Prioridade){
-				factory = new PrioridadeFactory();
-				escalonador = factory.criarEscalonador();
-			}
+			factory = criarFabrica(tipoEscalonador);
+			escalonador = factory.criarEscalonador();
 		}else {
 			throw new EscalonadorException();
 		}
 	}
 
-	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
-		if(roundrobin == TipoEscalonador.RoundRobin){
-			factory = new RoundRobinFactory();
+	public FachadaEscalonador(TipoEscalonador tipoEscalonador, int quantum) {
+		if( tipoEscalonador != null) {
+			factory = criarFabrica(tipoEscalonador);
 			escalonador = factory.criarEscalonador(quantum);
 		}
 	}
@@ -56,5 +51,15 @@ public class FachadaEscalonador {
 
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
 		escalonador.adicionarProcessoTempoFixo(string, duracao);
+	}
+
+
+	public AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
+		if(tipoEscalonador == TipoEscalonador.RoundRobin){
+			return new RoundRobinFactory();
+		}else if( tipoEscalonador == TipoEscalonador.Prioridade){
+			return new PrioridadeFactory();
+		}
+		return null;
 	}
 }

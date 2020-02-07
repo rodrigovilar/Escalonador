@@ -1,6 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
-public class RoundRobinFactory implements EscalonadorFactory {
+public class RoundRobinFactory implements AbstractFactory {
 
     @Override
     public Escalonador criarEscalonador() {

@@ -22,22 +22,12 @@ public class Prioridade extends Escalonador{
 
     private String nomeProcessoFinalizado;
     private String nomeProcessoBloquado;
-    private String processoRetomar;
 
     public Prioridade() {
         this.listaBloqueados = new ArrayList<>();
         this.listaRetomar = new ArrayList<>();
         this.fila = new ArrayList<>();
         this.quantum = 3;
-    }
-
-    public Prioridade(int quantum) {
-        if (quantum <= 0) {
-            throw new EscalonadorException();
-        }
-        this.listaBloqueados = new ArrayList<Processo>();
-        this.quantum = quantum;
-        this.fila = new ArrayList<Processo>();
     }
 
     public String getStatus() {

@@ -1,6 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
-public class PrioridadeFactory implements EscalonadorFactory {
+public class PrioridadeFactory implements AbstractFactory {
     @Override
     public Escalonador criarEscalonador() {
         return new Prioridade();
