@@ -6,24 +6,6 @@ import java.util.List;
 
 public class RoundRobin extends Escalonador{
 
-    private int tick;
-    private int quantum;
-    private int tickProximoFila;
-
-    private List<Processo> fila;// Lista de processos na fila
-    private List<Processo> listaBloqueados;
-    private List<Processo> listaRetomar;
-
-    private Processo rodando;// Lista de processos rodando
-
-    private boolean finalizado;
-    private boolean processoBloqueado;
-    private boolean retomar = false;
-
-    private String nomeProcessoFinalizado;
-    private String nomeProcessoBloquado;
-    private String processoRetomar;
-
     public RoundRobin() {
             this.listaBloqueados = new ArrayList<>();
             this.listaRetomar = new ArrayList<>();

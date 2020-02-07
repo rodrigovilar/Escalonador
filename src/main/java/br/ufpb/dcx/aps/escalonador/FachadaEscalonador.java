@@ -2,24 +2,27 @@ package br.ufpb.dcx.aps.escalonador;
 
 public class FachadaEscalonador {
 
+	public EscalonadorFactory factory;
 	private Escalonador escalonador;
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 		if(tipoEscalonador != null){
 			if(tipoEscalonador == TipoEscalonador.RoundRobin){
-				escalonador = new RoundRobin();
+				factory = new RoundRobinFactory();
+				escalonador = factory.criarEscalonador();
 			}else if(tipoEscalonador == TipoEscalonador.Prioridade){
-				escalonador = new Prioridade();
+				factory = new PrioridadeFactory();
+				escalonador = factory.criarEscalonador();
 			}
 		}else {
 			throw new EscalonadorException();
 		}
-
 	}
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
 		if(roundrobin == TipoEscalonador.RoundRobin){
-			escalonador = new RoundRobin(quantum);
+			factory = new RoundRobinFactory();
+			escalonador = factory.criarEscalonador(quantum);
 		}
 	}
 
@@ -54,5 +57,4 @@ public class FachadaEscalonador {
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
 		escalonador.adicionarProcessoTempoFixo(string, duracao);
 	}
-
 }
