@@ -106,6 +106,7 @@ public class FachadaEscalonador {
 			trocaRodandoParaFila();
 			adicionarProcessoRodando();
 		}
+
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
@@ -145,7 +146,13 @@ public class FachadaEscalonador {
 				break;
 			}
 		}
+
 		if (rodando != null && bloqueado == false) {
+			if (!fila.isEmpty()) {
+				if (rodando.getPrioridade() < fila.get(0).getPrioridade()) {
+					return;
+				}
+			}
 			rodando.setTickRodando(0);
 			fila.add(rodando);
 			rodando = null;
