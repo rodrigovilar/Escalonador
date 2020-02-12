@@ -8,6 +8,6 @@ public class PrioridadeFactory implements AbstractFactory {
 
     @Override
     public Escalonador criarEscalonador(int quantum) {
-        return null;
+        return new Prioridade(quantum);
     }
 }
