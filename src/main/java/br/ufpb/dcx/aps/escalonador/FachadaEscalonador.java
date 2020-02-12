@@ -15,9 +15,11 @@ public class FachadaEscalonador {
 	}
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador, int quantum) {
-		if( tipoEscalonador != null) {
+		if( tipoEscalonador != null && quantum > 0) {
 			factory = criarFabrica(tipoEscalonador);
 			escalonador = factory.criarEscalonador(quantum);
+		}else {
+			throw new EscalonadorException();
 		}
 	}
 
