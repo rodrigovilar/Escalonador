@@ -61,6 +61,8 @@ public class FachadaEscalonador {
 			return new RoundRobinFactory();
 		}else if( tipoEscalonador == TipoEscalonador.Prioridade){
 			return new PrioridadeFactory();
+		}else if (tipoEscalonador == TipoEscalonador.MaisCurtoPrimeiro ) {
+			return new MaisCurtoFactory();
 		}
 		return null;
 	}
