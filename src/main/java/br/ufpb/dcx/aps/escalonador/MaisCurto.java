@@ -49,36 +49,16 @@ public class MaisCurto extends Escalonador {
     public void tick() {
         tick++;
 
-        if (finalizado) {
-            finalizandoProcesso(this.nomeProcessoFinalizado);
-            finalizado = false;
-        }
-
-        if (processoBloqueado) {
-            bloqueandoProcesso(nomeProcessoBloquado);
-        }
-
-        if (retomar) {
-            retomandoProcesso(listaRetomar);
-            retomar = false;
-        }
-
         if (rodando != null) {
             rodando.addTickRodando();
         }
 
-        if (rodando != null && rodando.getTickRodando() >= quantum && tickProximoFila < tick) {
-            trocaRodandoParaFila();// chama o metodo para trocar o processo que esta rodando para fila
+        if(rodando != null && (rodando.getTickInicial() == rodando.getTickRodando())){
+            finalizandoProcesso(rodando.getNome());
         }
 
         if (this.rodando == null && !fila.isEmpty()) {
             adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
-        }
-
-        if (!listaBloqueados.isEmpty() && retomar == false) {
-            processoBloqueado = true;
-            trocaRodandoParaFila();
-            adicionarProcessoRodando();
         }
     }
 
@@ -265,6 +245,8 @@ public class MaisCurto extends Escalonador {
     }
 
     public void adicionarProcessoTempoFixo(String string, int duracao) {
+        Processo processo = new Processo(string, duracao);
+        fila.add(processo);
     }
 
 }

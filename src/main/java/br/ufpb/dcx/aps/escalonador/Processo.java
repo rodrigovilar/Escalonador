@@ -20,8 +20,8 @@ public class Processo implements Comparable<Processo>{
 		this.nome = nome;
 		this.tickRodando = 0;
 		this.tickInicial = tickCriacao;
-		
 	}
+
 	public int getPrioridade() {
 		return prioridade;
 	}

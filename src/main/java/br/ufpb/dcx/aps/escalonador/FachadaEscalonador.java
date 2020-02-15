@@ -55,8 +55,7 @@ public class FachadaEscalonador {
 		escalonador.adicionarProcessoTempoFixo(string, duracao);
 	}
 
-
-	public AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
+	private AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
 		if(tipoEscalonador == TipoEscalonador.RoundRobin){
 			return new RoundRobinFactory();
 		}else if( tipoEscalonador == TipoEscalonador.Prioridade){
