@@ -245,8 +245,12 @@ public class MaisCurto extends Escalonador {
     }
 
     public void adicionarProcessoTempoFixo(String string, int duracao) {
-        Processo processo = new Processo(string, duracao);
-        fila.add(processo);
+        if(existsProcessoByName(string) || string == null || duracao <= 0){
+            throw new EscalonadorException();
+        }else{
+            Processo processo = new Processo(string, duracao);
+            fila.add(processo);
+        }
     }
 
 }
