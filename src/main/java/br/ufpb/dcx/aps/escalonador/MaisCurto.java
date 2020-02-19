@@ -47,55 +47,20 @@ public class MaisCurto extends Escalonador {
 	}
 
 	public void tick() {
-		tick++;
+        tick++;
 
-		if (finalizado) {
-			finalizandoProcesso(this.nomeProcessoFinalizado);
-			finalizado = false;
-		}
+        if (rodando != null) {
+            rodando.addTickRodando();
+        }
 
-		if (processoBloqueado) {
-			bloqueandoProcesso(nomeProcessoBloquado);
-		}
+        if(rodando != null && (rodando.getTickRodando() >= rodando.getTemp()) ){
+            finalizandoProcesso(rodando.getNome());
+        }
 
-		if (retomar) {
-			retomandoProcesso(listaRetomar);
-			retomar = false;
-			Collections.sort(fila);
-		}
-
-		if (rodando != null) {
-			rodando.addTickRodando();
-			
-		}
-		if (rodando != null && rodando.getTickRodando() >= quantum) {
-			finalizarProcesso(rodando.getNome());// chama o metodo para trocar o processo que esta rodando para fila
-		}
-			
-
-	
-		
-
-
-		if (this.rodando == null && !fila.isEmpty()) {
-			adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
-		}
-
-		if (!listaBloqueados.isEmpty() && retomar == false) {
-			processoBloqueado = true;
-			trocaRodandoParaFila();
-			adicionarProcessoRodando();
-		}
-
-		if (!fila.isEmpty() && fila.get(0).getPrioridade() < rodando.getPrioridade()) {
-			if (rodando != null) {
-				trocaRodandoParaFila();
-				adicionarProcessoRodando();
-				Collections.sort(fila);
-			}
-		}
-	}
-
+        if (this.rodando == null && !fila.isEmpty()) {
+            adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
+        }
+    }
 
 	public void adicionarProcesso(String nomeProcesso) {
 
@@ -107,12 +72,6 @@ public class MaisCurto extends Escalonador {
 			throw new EscalonadorException();
 		}
 
-		if (this.quantum >= 0) {
-			Processo processo = new Processo(nomeProcesso, tick);// Cria um processo
-			tickProximoFila = quantum + processo.getTickInicial();
-			fila.add(processo);// Adiciona o processo na fila
-
-		}
 	}
 
 	public void adicionarProcessoRodando() {
@@ -150,23 +109,12 @@ public class MaisCurto extends Escalonador {
 		}
 	}
 
-	
-	public void adicionarProcesso(String nomeProcesso, int prioridade) {
+	public void adicionarProcesso(String nomeProcesso, int tempo) {
 
 		if (existsProcessoByName(nomeProcesso)) {
 			throw new EscalonadorException();
 		}
 
-		if (nomeProcesso == null) {
-			throw new EscalonadorException();
-		}
-
-		if (this.quantum >= 0) {
-			Processo processo = new Processo(nomeProcesso, tick, prioridade);// Cria um processo
-			tickProximoFila = quantum + processo.getTickInicial();
-			fila.add(processo);// Adiciona o processo na fila
-			Collections.sort(fila);
-		}
 	}
 
 	public void finalizarProcesso(String nomeProcesso) {
@@ -285,10 +233,14 @@ public class MaisCurto extends Escalonador {
 		return false;
 	}
 
-	public void adicionarProcessoTempoFixo(String string, int tickCriacao) {
-		Processo processo = new Processo(string, tickCriacao);
-		fila.add(processo);
-		
-	}
-
+	public void adicionarProcessoTempoFixo(String nomeProcesso, int duracao) {
+        if(existsProcessoByName(nomeProcesso) || nomeProcesso == null || duracao <= 0){
+            throw new EscalonadorException();
+        }else{
+            Processo processo = new Processo(duracao, this.tick, nomeProcesso);
+            fila.add(processo);
+            Collections.sort(fila);
+        }
+    }
 }
+
