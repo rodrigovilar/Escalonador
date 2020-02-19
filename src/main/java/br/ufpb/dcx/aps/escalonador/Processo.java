@@ -9,6 +9,7 @@ public class Processo implements Comparable<Processo> {
 	private int ticks;
 	private int tempo;
 
+
 	public Processo(String nome, int tickCriacao) {
 		this.nome = nome;
 		this.tickRodando = 0;
@@ -90,7 +91,7 @@ public class Processo implements Comparable<Processo> {
 		}else if(this.prioridade > outroProcesso.prioridade) {
 			return 1;
 		}
-		
+
 		if(this.tempo < outroProcesso.tempo) {
 			return -1;
 		}else if(this.tempo > outroProcesso.tempo) {
