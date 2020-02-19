@@ -7,6 +7,7 @@ public class Processo implements Comparable<Processo>{
 	private int tickRodando;
 	private int tickInicial;
 	private int ticks;
+	private int temp;
 
 	
 	public Processo(String nome, int tickCriacao) {
@@ -20,12 +21,23 @@ public class Processo implements Comparable<Processo>{
 		this.nome = nome;
 		this.tickRodando = 0;
 		this.tickInicial = tickCriacao;
-		
 	}
+	
+	public Processo(int temp, int tickCriacao, String nome) {
+		this.temp = temp;
+		this.nome = nome;
+		this.tickRodando = 0;
+		this.tickInicial = tickCriacao;
+	}
+	
+
+	public int getTemp() {
+		return temp;
+	}
+
 	public int getPrioridade() {
 		return prioridade;
 	}
-
 
 	public void setPrioridade(int prioridade) {
 		this.prioridade = prioridade;
@@ -78,8 +90,13 @@ public class Processo implements Comparable<Processo>{
 		// TODO Auto-generated method stub
 		if(this.prioridade < outroProcesso.prioridade) {
 			return -1;
+		}else if(this.prioridade > outroProcesso.prioridade) {
+			return 1;
 		}
-		if(this.prioridade > outroProcesso.prioridade) {
+		
+		if(this.temp < outroProcesso.temp) {
+			return -1;
+		}else if(this.temp > outroProcesso.temp) {
 			return 1;
 		}
 		return 0;
