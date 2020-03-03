@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
+import br.ufpb.dcx.aps.escalonador.comando.ComandoTick;
+
 public class FachadaEscalonadorPrioridadeTest {
 	
 	private FachadaEscalonador fachada;
@@ -21,7 +23,7 @@ public class FachadaEscalonadorPrioridadeTest {
 
    	@Test
 	public void t02_avancarTempo() {
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatus(fachada, TipoEscalonador.Prioridade, 3, 1);
 	}
 
@@ -30,7 +32,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P1", 1);
 		checaStatusFila(fachada, TipoEscalonador.Prioridade, 3, 0, "P1");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 1, "P1");
 		
 		//Estoura o quantum mas não tira o processo P1 da CPU, pois não há concorrência
@@ -46,7 +48,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.finalizarProcesso("P1");
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 4, "P1");
 
-		fachada.tick();//Só efetua a ação no próximo tick
+		fachada.execute(new ComandoTick(fachada));//Só efetua a ação no próximo tick
 		checaStatus(fachada, TipoEscalonador.Prioridade, 3, 5);
 	}
 
@@ -55,19 +57,19 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 3, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 4, "P2", "P1");
 		
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 7, "P1", "P2");
 	}
 
@@ -77,25 +79,25 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 3, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 4, "P2", "P3", "P1");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P2", "P3", "P1");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 7, "P3", "P1", "P2");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 9, "P3", "P1", "P2");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 10, "P1", "P2", "P3");
 	}
 	
@@ -107,19 +109,19 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 3, "P1", "P2");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 5, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P2", "P1");
 		
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 8, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 9, "P1", "P2");
 	}
 	
@@ -130,19 +132,19 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
 		fachada.finalizarProcesso("P1");
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "P3");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 4, "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 5, "P3", "P2");
 
 		ticks(fachada, 3);
@@ -154,13 +156,13 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2");
 		
 		fachada.finalizarProcesso("P2");
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 2, "P1");
 
 		ticks(fachada, 2);
@@ -173,13 +175,13 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 		
 		fachada.finalizarProcesso("P2");
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P1", "P3");
 
 		ticks(fachada, 2);
@@ -195,19 +197,19 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P1", 1);
 		fachada.adicionarProcesso("P2", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 5, 1, "P1", "P2");
 
 		ticks(fachada, 4);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 5, 5, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 5, 6, "P2", "P1");
 		
 		ticks(fachada, 4);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 5, 10, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 5, 11, "P1", "P2");
 	}
 	
@@ -215,7 +217,7 @@ public class FachadaEscalonadorPrioridadeTest {
 	public void t11_intervaloEntreProcessos() {
 		fachada.adicionarProcesso("P1", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 1, "P1");
 
 		ticks(fachada, 6);
@@ -224,7 +226,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.finalizarProcesso("P1");
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 7, "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatus(fachada, TipoEscalonador.Prioridade, 3, 8);
 
 		ticks(fachada, 2);
@@ -233,7 +235,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		checaStatusFila(fachada, TipoEscalonador.Prioridade, 3, 10, "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 11, "P2");
 
 		ticks(fachada, 4);
@@ -246,13 +248,13 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 		
 		fachada.bloquearProcesso("P1");
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "[P3]", "[P1]");
 		
 		ticks(fachada, 3);
@@ -268,7 +270,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		fachada.bloquearProcesso("P1");
 
 		ticks(fachada, 4);
@@ -277,7 +279,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.retomarProcesso("P1");
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 5, "P3", "[P2]", "[P1]");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P3", "P2", "P1");
 		
 		ticks(fachada, 3);
@@ -296,34 +298,34 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 1);
 		fachada.adicionarProcesso("P3", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		fachada.bloquearProcesso("P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "[P3]", "[P1]");
 		
 		fachada.bloquearProcesso("P2");
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "[P3]", "[P1]");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoBloqueio(fachada, TipoEscalonador.Prioridade, 3, 3, "P3", "P1", "P2");
 
 		fachada.bloquearProcesso("P3");
 		checaStatusRodandoBloqueio(fachada, TipoEscalonador.Prioridade, 3, 3, "P3", "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusBloqueio(fachada, TipoEscalonador.Prioridade, 3, 4, "P1", "P2", "P3");
 
 		fachada.retomarProcesso("P2");
 		fachada.retomarProcesso("P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 5, "P2", "[P1]", "[P3]");
 		
 		fachada.retomarProcesso("P3");
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 5, "P2", "[P1]", "[P3]");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P2", "P1", "P3");
 
 		ticks(fachada, 2);
@@ -365,7 +367,7 @@ public class FachadaEscalonadorPrioridadeTest {
 
 		fachada.adicionarProcesso("Q", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P", "Q");
 
 		assertThrows(EscalonadorException.class, () -> fachada.bloquearProcesso("Q"), 
@@ -373,7 +375,7 @@ public class FachadaEscalonadorPrioridadeTest {
 
 		fachada.bloquearProcesso("P");
 		fachada.adicionarProcesso("R", 1);
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 2, "Q", "[R]", "[P]");
 		
 		assertThrows(EscalonadorException.class, () -> fachada.retomarProcesso("Q"), 
@@ -395,24 +397,24 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P1", 2);
 		fachada.adicionarProcesso("P2", 1);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P2", "P1");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 3, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 4, "P2", "P1");
 		
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 7, "P2", "P1");
 
 		fachada.finalizarProcesso("P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 8, "P1");
 	}
 
@@ -420,30 +422,30 @@ public class FachadaEscalonadorPrioridadeTest {
 	public void t17_alternarDoisProcessosPorPrioridade() {
 		fachada.adicionarProcesso("P1", 2);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 1, "P1");
 
 		fachada.adicionarProcesso("P2", 1);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "P1");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 4, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 5, "P2", "P1");
 		
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 7, "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 8, "P2", "P1");
 
 		fachada.finalizarProcesso("P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 9, "P1");
 	}
 
@@ -451,41 +453,41 @@ public class FachadaEscalonadorPrioridadeTest {
 	public void t18_alternarTresProcessosPorPrioridade() {
 		fachada.adicionarProcesso("P1", 3);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 1, "P1");
 
 		fachada.adicionarProcesso("P2", 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "P1");
 
 		fachada.adicionarProcesso("P3", 1);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "P3", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 3, "P3", "P2", "P1");
 
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 5, "P3", "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P3", "P2", "P1");
 		
 		ticks(fachada, 2);
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 8, "P3", "P2", "P1");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 9, "P3", "P2", "P1");
 
 		fachada.finalizarProcesso("P2");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 10, "P3", "P1");
 
 		fachada.finalizarProcesso("P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodando(fachada, TipoEscalonador.Prioridade, 3, 11, "P1");
 
 	}
@@ -496,13 +498,13 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 2);
 		fachada.adicionarProcesso("P3", 2);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 		
 		fachada.bloquearProcesso("P1");
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 1, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 2, "P2", "[P3]", "[P1]");
 		
 		ticks(fachada, 3);
@@ -518,7 +520,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.adicionarProcesso("P2", 2);
 		fachada.adicionarProcesso("P3", 2);
 
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		fachada.bloquearProcesso("P1");
 
 		ticks(fachada, 4);
@@ -527,7 +529,7 @@ public class FachadaEscalonadorPrioridadeTest {
 		fachada.retomarProcesso("P1");
 		checaStatusRodandoFilaBloqueio(fachada, TipoEscalonador.Prioridade, 3, 5, "P3", "[P2]", "[P1]");
 		
-		fachada.tick();
+		fachada.execute(new ComandoTick(fachada));
 		checaStatusRodandoFila(fachada, TipoEscalonador.Prioridade, 3, 6, "P1", "P2", "P3");
 		
 		ticks(fachada, 3);

@@ -1,5 +1,7 @@
 package br.ufpb.dcx.aps.escalonador;
 
+import br.ufpb.dcx.aps.escalonador.comando.ComandoEscalonador;
+
 public class FachadaEscalonador {
 	
 	private int tick;
@@ -9,13 +11,9 @@ public class FachadaEscalonador {
 
 	public FachadaEscalonador(TipoEscalonador roundrobin, int quantum) {
 	}
-
-	public String getStatus() {
-		return "Escalonador RoundRobin;Processos: {};Quantum: 3;Tick: " + tick;
-	}
-
-	public void tick() {
-		tick++;
+	
+	public String execute(ComandoEscalonador comando) {
+		return null;
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
