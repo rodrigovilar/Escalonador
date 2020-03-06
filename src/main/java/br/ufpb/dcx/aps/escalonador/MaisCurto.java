@@ -94,4 +94,9 @@ public class MaisCurto extends Escalonador {
 			}
 		}
 	}
+
+	@Override
+	public void execute() {
+
+	}
 }
