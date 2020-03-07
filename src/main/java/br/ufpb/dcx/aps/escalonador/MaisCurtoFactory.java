@@ -1,5 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
+
 public class MaisCurtoFactory implements AbstractFactory{
 
 	@Override

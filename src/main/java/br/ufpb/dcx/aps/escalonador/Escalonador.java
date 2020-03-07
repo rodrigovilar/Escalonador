@@ -1,9 +1,11 @@
 package br.ufpb.dcx.aps.escalonador;
 
+import br.ufpb.dcx.aps.escalonador.command.Command;
+
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Escalonador {
+public abstract class Escalonador implements Command {
 
     protected int tick;
     protected int quantum;
@@ -26,6 +28,10 @@ public abstract class Escalonador {
 
     public TipoEscalonador getTipo() {
     	return tipoEscalonador;
+    }
+
+    public void execute(Command command){
+        command.execute();
     }
 
     public String getStatus() {
@@ -53,6 +59,7 @@ public abstract class Escalonador {
     }
 
     public void tick() {
+        tick++;
     }
 
     public void adicionarProcesso(String nomeProcesso) {

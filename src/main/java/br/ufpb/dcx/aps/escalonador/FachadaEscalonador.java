@@ -1,9 +1,11 @@
 package br.ufpb.dcx.aps.escalonador;
 
+import br.ufpb.dcx.aps.escalonador.command.*;
+
 public class FachadaEscalonador {
 
-	private AbstractFactory factory;
 	private Escalonador escalonador;
+	private AbstractFactory factory;
 
 	public FachadaEscalonador(TipoEscalonador tipoEscalonador) {
 		if(tipoEscalonador != null){
@@ -24,39 +26,39 @@ public class FachadaEscalonador {
 	}
 
 	public String getStatus() {
+
 		return escalonador.getStatus();
 	}
 
 	public void tick() {
-		escalonador.tick();
+		escalonador.execute(new TickCommand(escalonador));
 	}
 
 	public void adicionarProcesso(String nomeProcesso) {
-		escalonador.adicionarProcesso(nomeProcesso);
+		escalonador.execute(new AdicionarProcessoCommand(escalonador, nomeProcesso));
 	}
 
 	public void adicionarProcesso(String nomeProcesso, int prioridade) {
-		escalonador.adicionarProcesso(nomeProcesso, prioridade);
+		escalonador.execute(new AdicionarProcessoCommand(escalonador, nomeProcesso, prioridade));
 	}
 
 	public void finalizarProcesso(String nomeProcesso) {
-		escalonador.finalizarProcesso(nomeProcesso);
+		escalonador.execute(new FinalizarProcessoCommand(escalonador, nomeProcesso));
 	}
 
 	public void bloquearProcesso(String nomeProcesso) {
-		escalonador.bloquearProcesso(nomeProcesso);
+		escalonador.execute(new BloquearProcessoCommand(escalonador, nomeProcesso));
 	}
 
 	public void retomarProcesso(String nomeProcesso) {
-		escalonador.retomarProcesso(nomeProcesso);
+		escalonador.execute(new RetomarProcessoCommand(escalonador, nomeProcesso));
 	}
 
 	public void adicionarProcessoTempoFixo(String string, int duracao) {
-		escalonador.adicionarProcessoTempoFixo(string, duracao);
+		escalonador.execute(new AdicionarProcessoTempoFixo(escalonador, string, duracao));
 	}
 
-
-	public AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
+	private AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
 		if(tipoEscalonador == TipoEscalonador.RoundRobin){
 			return new RoundRobinFactory();
 		}else if( tipoEscalonador == TipoEscalonador.Prioridade){

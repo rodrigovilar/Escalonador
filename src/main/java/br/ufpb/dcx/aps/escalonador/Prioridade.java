@@ -141,4 +141,8 @@ public class Prioridade extends Escalonador{
 		}
 	}
 
+	@Override
+	public void execute() {
+
+	}
 }
