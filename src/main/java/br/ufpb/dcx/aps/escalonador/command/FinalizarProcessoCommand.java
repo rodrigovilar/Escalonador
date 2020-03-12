@@ -2,8 +2,9 @@ package br.ufpb.dcx.aps.escalonador.command;
 
 import br.ufpb.dcx.aps.escalonador.Escalonador;
 
-public class FinalizarProcessoCommand extends Command {
+public class FinalizarProcessoCommand implements Command {
 
+    private Escalonador escalonador;
     private String nomeProcesso;
 
     public FinalizarProcessoCommand(String nomeProcesso){
@@ -14,5 +15,15 @@ public class FinalizarProcessoCommand extends Command {
     public String executar() {
         getEscalonador().finalizarProcesso(nomeProcesso);
         return null;
+    }
+
+    @Override
+    public Escalonador getEscalonador() {
+        return this.escalonador;
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 }
