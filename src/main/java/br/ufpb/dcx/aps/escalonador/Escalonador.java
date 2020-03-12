@@ -30,9 +30,11 @@ public abstract class Escalonador {
     	return tipoEscalonador;
     }
 
+    public void setTipo(TipoEscalonador tipo){ this.tipoEscalonador = tipo;}
+
     public void execute(Command command){
         command.setEscalonador(this);
-        command.execute();
+        command.executar();
     }
 
     public String getStatus() {

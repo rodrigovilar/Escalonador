@@ -2,8 +2,17 @@ package br.ufpb.dcx.aps.escalonador.command;
 
 import br.ufpb.dcx.aps.escalonador.Escalonador;
 
-public interface Command {
-    String execute();
+public abstract class Command {
 
-    void setEscalonador(Escalonador escalonador);
+    private Escalonador escalonador;
+
+    public abstract String executar();
+
+    public Escalonador getEscalonador() {
+        return escalonador;
+    }
+
+    public void setEscalonador(Escalonador escalonador){
+        this.escalonador = escalonador;
+    }
 }

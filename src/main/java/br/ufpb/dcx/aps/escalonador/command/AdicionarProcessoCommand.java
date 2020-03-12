@@ -1,10 +1,8 @@
 package br.ufpb.dcx.aps.escalonador.command;
 
-import br.ufpb.dcx.aps.escalonador.Escalonador;
 
-public class AdicionarProcessoCommand implements Command {
+public class AdicionarProcessoCommand extends Command {
 
-    private Escalonador escalonador;
     private String nomeProcesso;
     private int prioridade;
 
@@ -18,13 +16,9 @@ public class AdicionarProcessoCommand implements Command {
     }
 
     @Override
-    public void execute() {
-        escalonador.adicionarProcesso(nomeProcesso);
-    }
-
-    @Override
-    public void setEscalonador(Escalonador escalonador) {
-        this.escalonador = escalonador;
+    public String executar() {
+        getEscalonador().adicionarProcesso(nomeProcesso);
+        return null;
     }
 
 

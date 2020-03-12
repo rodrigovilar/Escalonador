@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
+import br.ufpb.dcx.aps.escalonador.command.TickCommand;
+
 public class TestHelper {
 	
 	public static void ticks(FachadaEscalonador fachada, int vezes) {
 		for (int i = 0; i < vezes; i++) {
-			fachada.tick();
+			fachada.execute(new TickCommand());
 		}
 	}
 
@@ -19,8 +21,8 @@ public class TestHelper {
 		assertEquals("Escalonador " + escalonador + ";"
 				+ "Processos: {Rodando: " + rodando + ", Fila: " + Arrays.toString(fila) + "};"
 				+ "Quantum: " + quantum + ";"
-				+ "Tick: " + ticks,
-				fachada.execute(new GetStatusCommand(fachada)));
+				+ "Tick: " + ticks, 
+				fachada.execute(new GetStatusCommand()));
 	}
 
 	public static void checaStatusRodando(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
@@ -29,7 +31,7 @@ public class TestHelper {
 				+ "Processos: {Rodando: " + rodando + "};"
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 
 	public static void checaStatusFila(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
@@ -38,7 +40,7 @@ public class TestHelper {
 				+ "Processos: {Fila: " + Arrays.toString(fila) + "};"  
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 	
 	public static void checaStatus(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
@@ -47,7 +49,7 @@ public class TestHelper {
 				+ "Processos: {};"
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 	
 	public static void checaStatusRodandoFilaBloqueio(FachadaEscalonador fachada, TipoEscalonador escalonador, 
@@ -56,7 +58,7 @@ public class TestHelper {
 				+ "Processos: {Rodando: " + rodando + ", Fila: " + fila + ", Bloqueados: " + bloqueados + "};"
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 	
 	public static void checaStatusRodandoBloqueio(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
@@ -65,7 +67,7 @@ public class TestHelper {
 				+ "Processos: {Rodando: " + rodando + ", Bloqueados: " + Arrays.toString(bloqueio) + "};"
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 
 	public static void checaStatusBloqueio(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
@@ -74,7 +76,7 @@ public class TestHelper {
 				+ "Processos: {Bloqueados: " + Arrays.toString(bloqueio) + "};"  
 				+ "Quantum: " + quantum + ";"
 				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				fachada.execute(new GetStatusCommand()));
 	}
 	
 }

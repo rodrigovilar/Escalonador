@@ -1,10 +1,8 @@
 package br.ufpb.dcx.aps.escalonador.command;
 
-import br.ufpb.dcx.aps.escalonador.Escalonador;
 
-public class AdicionarProcessoTempoFixo implements Command {
+public class AdicionarProcessoTempoFixo extends Command {
 
-    private Escalonador escalonador;
     private String nomeProcesso;
     private int duracao;
 
@@ -14,12 +12,8 @@ public class AdicionarProcessoTempoFixo implements Command {
     }
 
     @Override
-    public void execute() {
-        escalonador.adicionarProcessoTempoFixo(nomeProcesso, duracao);
-    }
-
-    @Override
-    public void setEscalonador(Escalonador escalonador) {
-        this.escalonador = escalonador;
+    public String executar() {
+        getEscalonador().adicionarProcessoTempoFixo(nomeProcesso, duracao);
+        return null;
     }
 }

@@ -2,20 +2,15 @@ package br.ufpb.dcx.aps.escalonador.command;
 
 import br.ufpb.dcx.aps.escalonador.Escalonador;
 import br.ufpb.dcx.aps.escalonador.FachadaEscalonador;
+import br.ufpb.dcx.aps.escalonador.TipoEscalonador;
 
-public class GetStatusCommand implements Command {
+public class GetStatusCommand extends Command {
 
-    private Escalonador escalonador;
-
-    public GetStatusCommand(FachadaEscalonador escalonador){}
-
-    @Override
-    public String execute() {
-        return escalonador.getStatus();
-    }
+    public GetStatusCommand(){}
 
     @Override
-    public void setEscalonador(Escalonador escalonador) {
-        this.escalonador = escalonador;
+    public String executar() {
+        return this.getEscalonador().getStatus();
     }
+
 }
