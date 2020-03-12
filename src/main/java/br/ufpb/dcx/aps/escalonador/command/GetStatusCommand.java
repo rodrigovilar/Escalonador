@@ -1,19 +1,17 @@
 package br.ufpb.dcx.aps.escalonador.command;
 
 import br.ufpb.dcx.aps.escalonador.Escalonador;
+import br.ufpb.dcx.aps.escalonador.FachadaEscalonador;
 
-public class BloquearProcessoCommand implements Command {
+public class GetStatusCommand implements Command {
 
     private Escalonador escalonador;
-    private String nomeProcesso;
 
-    public BloquearProcessoCommand(String nomeProcesso){
-        this.nomeProcesso = nomeProcesso;
-    }
+    public GetStatusCommand(FachadaEscalonador escalonador){}
 
     @Override
-    public void execute() {
-        escalonador.bloquearProcesso(nomeProcesso);
+    public String execute() {
+        return escalonador.getStatus();
     }
 
     @Override

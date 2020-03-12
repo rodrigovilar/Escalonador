@@ -8,8 +8,7 @@ public class AdicionarProcessoTempoFixo implements Command {
     private String nomeProcesso;
     private int duracao;
 
-    public AdicionarProcessoTempoFixo(Escalonador escalonador, String nomeProcesso, int duracao){
-        this.escalonador = escalonador;
+    public AdicionarProcessoTempoFixo(String nomeProcesso, int duracao){
         this.nomeProcesso = nomeProcesso;
         this.duracao = duracao;
     }
@@ -17,5 +16,10 @@ public class AdicionarProcessoTempoFixo implements Command {
     @Override
     public void execute() {
         escalonador.adicionarProcessoTempoFixo(nomeProcesso, duracao);
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 }

@@ -7,13 +7,17 @@ public class FinalizarProcessoCommand implements Command {
     private Escalonador escalonador;
     private String nomeProcesso;
 
-    public FinalizarProcessoCommand(Escalonador escalonador, String nomeProcesso){
-        this.escalonador = escalonador;
+    public FinalizarProcessoCommand(String nomeProcesso){
         this.nomeProcesso = nomeProcesso;
     }
 
     @Override
     public void execute() {
         escalonador.finalizarProcesso(nomeProcesso);
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 }

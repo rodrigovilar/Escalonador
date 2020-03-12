@@ -7,13 +7,17 @@ public class TickCommand implements Command {
 
     private Escalonador escalonador;
 
-    public TickCommand(Escalonador escalonador){
-        this.escalonador = escalonador;
+    public TickCommand(){}
+
+    @Override
+    public String execute() {
+        escalonador.tick();
+        return null;
     }
 
     @Override
-    public void execute() {
-        escalonador.tick();
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 
 }

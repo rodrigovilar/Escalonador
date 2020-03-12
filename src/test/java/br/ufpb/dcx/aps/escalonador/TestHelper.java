@@ -1,5 +1,7 @@
 package br.ufpb.dcx.aps.escalonador;
 
+import br.ufpb.dcx.aps.escalonador.command.GetStatusCommand;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
@@ -17,10 +19,10 @@ public class TestHelper {
 		assertEquals("Escalonador " + escalonador + ";"
 				+ "Processos: {Rodando: " + rodando + ", Fila: " + Arrays.toString(fila) + "};"
 				+ "Quantum: " + quantum + ";"
-				+ "Tick: " + ticks, 
-				fachada.getStatus());
+				+ "Tick: " + ticks,
+				fachada.execute(new GetStatusCommand(fachada)));
 	}
-	
+
 	public static void checaStatusRodando(FachadaEscalonador fachada, TipoEscalonador escalonador, int quantum, 
 			int ticks, String rodando) {
 		assertEquals("Escalonador " + escalonador + ";"

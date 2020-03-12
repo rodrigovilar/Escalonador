@@ -8,13 +8,11 @@ public class AdicionarProcessoCommand implements Command {
     private String nomeProcesso;
     private int prioridade;
 
-    public AdicionarProcessoCommand(Escalonador escalonador, String nomeProcesso){
-        this.escalonador = escalonador;
+    public AdicionarProcessoCommand(String nomeProcesso){
         this.nomeProcesso = nomeProcesso;
     }
 
-    public AdicionarProcessoCommand(Escalonador escalonador, String nomeProcesso, int prioridade){
-        this.escalonador = escalonador;
+    public AdicionarProcessoCommand(String nomeProcesso, int prioridade){
         this.nomeProcesso = nomeProcesso;
         this.prioridade = prioridade;
     }
@@ -22,6 +20,11 @@ public class AdicionarProcessoCommand implements Command {
     @Override
     public void execute() {
         escalonador.adicionarProcesso(nomeProcesso);
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 
 
