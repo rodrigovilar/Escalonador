@@ -7,13 +7,23 @@ public class BloquearProcessoCommand implements Command {
     private Escalonador escalonador;
     private String nomeProcesso;
 
-    public BloquearProcessoCommand(Escalonador escalonador, String nomeProcesso){
-        this.escalonador = escalonador;
+    public BloquearProcessoCommand(String nomeProcesso){
         this.nomeProcesso = nomeProcesso;
     }
 
     @Override
-    public void execute() {
-        escalonador.bloquearProcesso(nomeProcesso);
+    public String executar() {
+        getEscalonador().bloquearProcesso(nomeProcesso);
+        return null;
+    }
+
+    @Override
+    public Escalonador getEscalonador() {
+        return this.escalonador;
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 }

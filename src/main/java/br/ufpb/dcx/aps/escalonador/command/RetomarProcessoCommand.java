@@ -7,13 +7,23 @@ public class RetomarProcessoCommand implements Command {
     private Escalonador escalonador;
     private String nomeProcesso;
 
-    public RetomarProcessoCommand(Escalonador escalonador, String nomeProcesso){
-        this.escalonador = escalonador;
+    public RetomarProcessoCommand(String nomeProcesso){
         this.nomeProcesso = nomeProcesso;
     }
 
     @Override
-    public void execute() {
-        escalonador.retomarProcesso(nomeProcesso);
+    public String executar() {
+        getEscalonador().retomarProcesso(nomeProcesso);
+        return null;
+    }
+
+    @Override
+    public Escalonador getEscalonador() {
+        return this.escalonador;
+    }
+
+    @Override
+    public void setEscalonador(Escalonador escalonador) {
+        this.escalonador = escalonador;
     }
 }

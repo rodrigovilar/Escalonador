@@ -25,37 +25,9 @@ public class FachadaEscalonador {
 		}
 	}
 
-	public String getStatus() {
-
-		return escalonador.getStatus();
-	}
-
-	public void tick() {
-		escalonador.execute(new TickCommand(escalonador));
-	}
-
-	public void adicionarProcesso(String nomeProcesso) {
-		escalonador.execute(new AdicionarProcessoCommand(escalonador, nomeProcesso));
-	}
-
-	public void adicionarProcesso(String nomeProcesso, int prioridade) {
-		escalonador.execute(new AdicionarProcessoCommand(escalonador, nomeProcesso, prioridade));
-	}
-
-	public void finalizarProcesso(String nomeProcesso) {
-		escalonador.execute(new FinalizarProcessoCommand(escalonador, nomeProcesso));
-	}
-
-	public void bloquearProcesso(String nomeProcesso) {
-		escalonador.execute(new BloquearProcessoCommand(escalonador, nomeProcesso));
-	}
-
-	public void retomarProcesso(String nomeProcesso) {
-		escalonador.execute(new RetomarProcessoCommand(escalonador, nomeProcesso));
-	}
-
-	public void adicionarProcessoTempoFixo(String string, int duracao) {
-		escalonador.execute(new AdicionarProcessoTempoFixo(escalonador, string, duracao));
+	public String execute(Command command){
+		command.setEscalonador(this.escalonador);
+		return command.executar();
 	}
 
 	private AbstractFactory criarFabrica(TipoEscalonador tipoEscalonador){
@@ -67,6 +39,26 @@ public class FachadaEscalonador {
 			return new MaisCurtoFactory();
 		}
 		return null;
+	}
+
+	public void adicionarProcesso(String nomeProcesso) {
+	}
+
+	public void adicionarProcesso(String nomeProcesso, int prioridade) {
+	}
+
+	public void finalizarProcesso(String nomeProcesso) {
+	}
+
+	public void bloquearProcesso(String nomeProcesso) {
+	}
+
+	public void retomarProcesso(String nomeProcesso) {
+
+	}
+
+	public void adicionarProcessoTempoFixo(String string, int duracao) {
+
 	}
 }
 

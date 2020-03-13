@@ -5,7 +5,7 @@ import br.ufpb.dcx.aps.escalonador.command.Command;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Escalonador implements Command {
+public abstract class Escalonador {
 
     protected int tick;
     protected int quantum;
@@ -30,8 +30,11 @@ public abstract class Escalonador implements Command {
     	return tipoEscalonador;
     }
 
+    public void setTipo(TipoEscalonador tipo){ this.tipoEscalonador = tipo;}
+
     public void execute(Command command){
-        command.execute();
+        command.setEscalonador(this);
+        command.executar();
     }
 
     public String getStatus() {
