@@ -3,13 +3,13 @@ package br.ufpb.dcx.aps.escalonador.command;
 
 import br.ufpb.dcx.aps.escalonador.Escalonador;
 
-public class AdicionarProcessoTempoFixo implements Command {
+public class AdicionarProcessoTempoFixoCommand implements Command {
 
     private Escalonador escalonador;
     private String nomeProcesso;
     private int duracao;
 
-    public AdicionarProcessoTempoFixo(String nomeProcesso, int duracao){
+    public AdicionarProcessoTempoFixoCommand(String nomeProcesso, int duracao){
         this.nomeProcesso = nomeProcesso;
         this.duracao = duracao;
     }
