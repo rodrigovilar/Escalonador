@@ -20,7 +20,11 @@ public class AdicionarProcessoCommand implements Command {
 
     @Override
     public String executar() {
-        getEscalonador().adicionarProcesso(nomeProcesso);
+    	if(this.prioridade == 0) {
+    		getEscalonador().adicionarProcesso(nomeProcesso);    		
+    	}else {
+    		getEscalonador().adicionarProcesso(nomeProcesso, prioridade);
+    	}
         return null;
     }
 

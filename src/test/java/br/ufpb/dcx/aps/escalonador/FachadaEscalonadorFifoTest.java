@@ -3,6 +3,7 @@ package br.ufpb.dcx.aps.escalonador;
 import static br.ufpb.dcx.aps.escalonador.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import br.ufpb.dcx.aps.escalonador.command.AdicionarProcessoCommand;
 import br.ufpb.dcx.aps.escalonador.command.TickCommand;
 import org.junit.jupiter.api.*;
 
@@ -28,17 +29,17 @@ public class FachadaEscalonadorFifoTest {
 
     @Test
 	public void t03_processoTerminaPorSiSo() {
-		fachada.adicionarProcessoTempoFixo("P1", 2);
+		fachada.execute(new AdicionarProcessoCommand("P1", 2));
 		checaStatusFila(fachada, TipoEscalonador.Fifo, 0, 0, "P1");
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 2, "P1");
 		
 		//Acaba a duração do processo e libera a CPU 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatus(fachada, TipoEscalonador.Fifo, 0, 3);
 	}
 
@@ -47,22 +48,22 @@ public class FachadaEscalonadorFifoTest {
 		fachada.adicionarProcessoTempoFixo("P1", 3);
 		fachada.adicionarProcessoTempoFixo("P2", 2);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 1, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 2, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 3, "P1", "P2");
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 4, "P2");
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 5, "P2");
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatus(fachada, TipoEscalonador.Fifo, 0, 6);
 	}
 	
@@ -72,7 +73,7 @@ public class FachadaEscalonadorFifoTest {
 		fachada.adicionarProcessoTempoFixo("P2", 2);
 		fachada.adicionarProcessoTempoFixo("P3", 3);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 1, "P1", "P2", "P3");
 
 		ticks(fachada, 3);
@@ -89,16 +90,16 @@ public class FachadaEscalonadorFifoTest {
 	public void t06_tresProcessosInicioDiferente() {
 		fachada.adicionarProcessoTempoFixo("P1", 2);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 
 		fachada.adicionarProcessoTempoFixo("P2", 3);
 		fachada.adicionarProcessoTempoFixo("P3", 2);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 2, "P1", "P2", "P3");
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 3, "P2", "P3");
 				
 		ticks(fachada, 3);
@@ -112,17 +113,17 @@ public class FachadaEscalonadorFifoTest {
 	public void t07_tresProcessosInicioDiferente() {
 		fachada.adicionarProcessoTempoFixo("P1", 2);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 
 		fachada.adicionarProcessoTempoFixo("P2", 3);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 2, "P1", "P2");
 
 		fachada.adicionarProcessoTempoFixo("P3", 2);
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 3, "P2", "P3");
 				
 		ticks(fachada, 3);
@@ -136,20 +137,20 @@ public class FachadaEscalonadorFifoTest {
 	public void t08_tresProcessosAdicionarMenorNoMeio() {
 		fachada.adicionarProcessoTempoFixo("P1", 2);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 
 		fachada.adicionarProcessoTempoFixo("P2", 1);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 2, "P1", "P2");
 
 		fachada.adicionarProcessoTempoFixo("P3", 2);
 		
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 3, "P2", "P3");
 				
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 4, "P3");
 
 		ticks(fachada, 2);
@@ -160,7 +161,7 @@ public class FachadaEscalonadorFifoTest {
 	public void t09_intervaloEntreProcessos() {
 		fachada.adicionarProcessoTempoFixo("P1", 3);
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 
 		ticks(fachada, 6);
@@ -170,7 +171,7 @@ public class FachadaEscalonadorFifoTest {
 		fachada.adicionarProcessoTempoFixo("P2", 2);
 		checaStatusFila(fachada, TipoEscalonador.Fifo, 0, 7, "P2");
 
-		fachada.tick();
+		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 8, "P2");
 
 		ticks(fachada, 3);
