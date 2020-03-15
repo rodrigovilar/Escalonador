@@ -37,6 +37,8 @@ public class FachadaEscalonador {
 			return new PrioridadeFactory();
 		}else if (tipoEscalonador == TipoEscalonador.MaisCurtoPrimeiro ) {
 			return new MaisCurtoFactory();
+		}else if (tipoEscalonador == TipoEscalonador.Fifo) {
+			return new FifoFactory();
 		}
 		return null;
 	}
