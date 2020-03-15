@@ -31,6 +31,16 @@ public class Fifo extends Escalonador {
 	        if (rodando != null) {
 	            rodando.addTickRodando();
 	        }
+	        
+	        if(rodando != null && (rodando.getTickRodando() >= rodando.getPrioridade()) ){
+	            finalizandoProcesso(rodando.getNome());
+	        }
+
+	        
+	        if (this.rodando == null && !fila.isEmpty()) {
+	            adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
+	        }
+
 	    }
 
 		public void trocaRodandoParaFila() {
@@ -38,8 +48,21 @@ public class Fifo extends Escalonador {
 		}
 
 		public void finalizandoProcesso(String nomeProcesso) {
-			
+			if (rodando != null) {
+				if (rodando.getNome().equals(nomeProcesso)) {
+					rodando = null;
+				} else {
+					for (Processo f : fila) {
+						if (f.getNome().equals(nomeProcesso)) {
+							fila.remove(f);
+							break;
+						}
+					}
+				}
+			}
+
 		}
+		
 		public void retomandoProcesso(List<Processo> retomar) {
 
 			

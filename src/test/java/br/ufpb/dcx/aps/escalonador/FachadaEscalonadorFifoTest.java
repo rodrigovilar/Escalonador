@@ -3,6 +3,7 @@ package br.ufpb.dcx.aps.escalonador;
 import static br.ufpb.dcx.aps.escalonador.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import br.ufpb.dcx.aps.escalonador.command.AdicionarProcessoCommand;
 import br.ufpb.dcx.aps.escalonador.command.TickCommand;
 import org.junit.jupiter.api.*;
 
@@ -28,7 +29,7 @@ public class FachadaEscalonadorFifoTest {
 
     @Test
 	public void t03_processoTerminaPorSiSo() {
-		fachada.adicionarProcessoTempoFixo("P1", 2);
+		fachada.execute(new AdicionarProcessoCommand("P1", 2));
 		checaStatusFila(fachada, TipoEscalonador.Fifo, 0, 0, "P1");
 		
 		fachada.execute(new TickCommand());
