@@ -33,20 +33,34 @@ public class Fifo extends Escalonador {
 	        }
 	        
 	        if(rodando != null && (rodando.getTickRodando() >= rodando.getPrioridade()) ){
-	            finalizandoProcesso(rodando.getNome());
+	        	if (rodando.getTickRodando() > rodando.getTemp())  {
+	        		finalizandoProcesso(rodando.getNome());
+	        		
+	        	}
+	        	else {
+	        		rodando.addTickRodando();
+	        	}
 	        }
 
 	        
 	        if (this.rodando == null && !fila.isEmpty()) {
 	            adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
 	        }
+	        
+	        if (this.rodando == null && fila.isEmpty()) {
+	            adicionarProcessoRodando();// chama o metodo para adicionar um processo a lista de rodando
+	        }	       
+	        
+
+	        
 
 	    }
 
 		public void trocaRodandoParaFila() {
-			
+
 		}
 
+		
 		public void finalizandoProcesso(String nomeProcesso) {
 			if (rodando != null) {
 				if (rodando.getNome().equals(nomeProcesso)) {
@@ -57,13 +71,16 @@ public class Fifo extends Escalonador {
 							fila.remove(f);
 							break;
 						}
-					}
+					} 
 				}
 			}
 
 		}
 		
+
+		
 		public void retomandoProcesso(List<Processo> retomar) {
+			
 
 			
 		}
