@@ -33,11 +33,11 @@ public class Fifo extends Escalonador {
 	        }
 	        
 	        if(rodando != null && (rodando.getTickRodando() >= rodando.getPrioridade()) ){
-	        	if (rodando.getTickRodando() > rodando.getTemp())  {
+	        	if (rodando.getTickRodando() >= rodando.getTemp())  {
 	        		finalizandoProcesso(rodando.getNome());
 	        		
 	        	}
-	        	else {
+	        	else if(rodando.getTickRodando() == rodando.getTemp()){
 	        		rodando.addTickRodando();
 	        	}
 	        }

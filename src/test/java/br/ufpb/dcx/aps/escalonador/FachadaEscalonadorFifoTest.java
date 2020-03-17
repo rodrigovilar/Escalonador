@@ -136,17 +136,17 @@ public class FachadaEscalonadorFifoTest {
 	
 	@Test
 	public void t08_tresProcessosAdicionarMenorNoMeio() {
-		fachada.adicionarProcessoTempoFixo("P1", 2);
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P1", 2));
 
 		fachada.execute(new TickCommand());
 		checaStatusRodando(fachada, TipoEscalonador.Fifo, 0, 1, "P1");
 
-		fachada.adicionarProcessoTempoFixo("P2", 1);
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P2", 1));
 
 		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 2, "P1", "P2");
 
-		fachada.adicionarProcessoTempoFixo("P3", 2);
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P3", 2));
 		
 		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 3, "P2", "P3");
