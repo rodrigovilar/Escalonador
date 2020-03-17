@@ -4,6 +4,7 @@ import static br.ufpb.dcx.aps.escalonador.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import br.ufpb.dcx.aps.escalonador.command.AdicionarProcessoCommand;
+import br.ufpb.dcx.aps.escalonador.command.AdicionarProcessoTempoFixoCommand;
 import br.ufpb.dcx.aps.escalonador.command.TickCommand;
 import org.junit.jupiter.api.*;
 
@@ -45,8 +46,8 @@ public class FachadaEscalonadorFifoTest {
 
 	@Test
 	public void t04_doisProcessosIniciaPeloPrimeiro() {
-		fachada.adicionarProcessoTempoFixo("P1", 3);
-		fachada.adicionarProcessoTempoFixo("P2", 2);
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P1", 3));
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P2", 2));
 
 		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 1, "P1", "P2");
@@ -69,9 +70,9 @@ public class FachadaEscalonadorFifoTest {
 	
 	@Test
 	public void t05_tresProcessosDesempatePelaOrdemDeAdicao() {
-		fachada.adicionarProcessoTempoFixo("P1", 3);
-		fachada.adicionarProcessoTempoFixo("P2", 2);
-		fachada.adicionarProcessoTempoFixo("P3", 3);
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P1", 3));
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P2", 2));
+		fachada.execute(new AdicionarProcessoTempoFixoCommand("P3", 3));
 
 		fachada.execute(new TickCommand());
 		checaStatusRodandoFila(fachada, TipoEscalonador.Fifo, 0, 1, "P1", "P2", "P3");

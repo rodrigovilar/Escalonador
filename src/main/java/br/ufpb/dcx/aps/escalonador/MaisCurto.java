@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MaisCurto extends Escalonador {
 
-	public MaisCurto() {
+	public MaisCurto() { 
 		this.listaBloqueados = new ArrayList<>();
 		this.listaRetomar = new ArrayList<>();
 		this.fila = new ArrayList<>();

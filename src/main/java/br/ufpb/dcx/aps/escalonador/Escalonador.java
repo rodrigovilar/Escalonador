@@ -192,7 +192,9 @@ public abstract class Escalonador {
         }else{
             Processo processo = new Processo(duracao, this.tick, nomeProcesso);
             fila.add(processo);
-            Collections.sort(fila);
+            if (getTipo() == TipoEscalonador.MaisCurtoPrimeiro){
+		    Collections.sort(fila);
+	    }
         }
     }
 }
