@@ -81,8 +81,6 @@ public class Fifo extends Escalonador {
 		
 		public void retomandoProcesso(List<Processo> retomar) {
 			
-
-			
 		}
 	
 
