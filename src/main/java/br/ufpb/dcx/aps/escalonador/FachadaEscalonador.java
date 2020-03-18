@@ -43,24 +43,5 @@ public class FachadaEscalonador {
 		return null;
 	}
 
-	public void adicionarProcesso(String nomeProcesso) {
-	}
-
-	public void adicionarProcesso(String nomeProcesso, int prioridade) {
-	}
-
-	public void finalizarProcesso(String nomeProcesso) {
-	}
-
-	public void bloquearProcesso(String nomeProcesso) {
-	}
-
-	public void retomarProcesso(String nomeProcesso) {
-
-	}
-
-	public void adicionarProcessoTempoFixo(String string, int duracao) {
-
-	}
 }
 
