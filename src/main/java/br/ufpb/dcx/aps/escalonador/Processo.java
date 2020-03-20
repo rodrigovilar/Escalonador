@@ -89,5 +89,3 @@ public class Processo implements Comparable<Processo> {
 		return tempo;
 	}
 }
-
-
